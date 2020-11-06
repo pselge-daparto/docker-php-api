@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class VolumesCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,34 +32,48 @@ class VolumesCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\VolumesCreatePostBody;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\VolumesCreatePostBody';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\VolumesCreatePostBody();
-        if (property_exists($data, 'Name') && $data->{'Name'} !== null) {
-            $object->setName($data->{'Name'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'Driver') && $data->{'Driver'} !== null) {
-            $object->setDriver($data->{'Driver'});
+        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+            $object->setName($data['Name']);
+        } elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+            $object->setName(null);
         }
-        if (property_exists($data, 'DriverOpts') && $data->{'DriverOpts'} !== null) {
+        if (\array_key_exists('Driver', $data) && $data['Driver'] !== null) {
+            $object->setDriver($data['Driver']);
+        } elseif (\array_key_exists('Driver', $data) && $data['Driver'] === null) {
+            $object->setDriver(null);
+        }
+        if (\array_key_exists('DriverOpts', $data) && $data['DriverOpts'] !== null) {
             $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($data->{'DriverOpts'} as $key => $value) {
+            foreach ($data['DriverOpts'] as $key => $value) {
                 $values[$key] = $value;
             }
             $object->setDriverOpts($values);
+        } elseif (\array_key_exists('DriverOpts', $data) && $data['DriverOpts'] === null) {
+            $object->setDriverOpts(null);
         }
-        if (property_exists($data, 'Labels') && $data->{'Labels'} !== null) {
+        if (\array_key_exists('Labels', $data) && $data['Labels'] !== null) {
             $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($data->{'Labels'} as $key_1 => $value_1) {
+            foreach ($data['Labels'] as $key_1 => $value_1) {
                 $values_1[$key_1] = $value_1;
             }
             $object->setLabels($values_1);
+        } elseif (\array_key_exists('Labels', $data) && $data['Labels'] === null) {
+            $object->setLabels(null);
         }
 
         return $object;
@@ -64,26 +81,26 @@ class VolumesCreatePostBodyNormalizer implements DenormalizerInterface, Normaliz
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getName()) {
-            $data->{'Name'} = $object->getName();
+            $data['Name'] = $object->getName();
         }
         if (null !== $object->getDriver()) {
-            $data->{'Driver'} = $object->getDriver();
+            $data['Driver'] = $object->getDriver();
         }
         if (null !== $object->getDriverOpts()) {
-            $values = new \stdClass();
+            $values = [];
             foreach ($object->getDriverOpts() as $key => $value) {
-                $values->{$key} = $value;
+                $values[$key] = $value;
             }
-            $data->{'DriverOpts'} = $values;
+            $data['DriverOpts'] = $values;
         }
         if (null !== $object->getLabels()) {
-            $values_1 = new \stdClass();
+            $values_1 = [];
             foreach ($object->getLabels() as $key_1 => $value_1) {
-                $values_1->{$key_1} = $value_1;
+                $values_1[$key_1] = $value_1;
             }
-            $data->{'Labels'} = $values_1;
+            $data['Labels'] = $values_1;
         }
 
         return $data;

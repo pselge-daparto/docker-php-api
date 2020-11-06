@@ -13,43 +13,35 @@ namespace Docker\API\Model;
 class ImagesNameHistoryGetResponse200Item
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $id;
     /**
-     * @var int
+     * @var int|null
      */
     protected $created;
     /**
-     * @var string
+     * @var string|null
      */
     protected $createdBy;
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $tags;
     /**
-     * @var int
+     * @var int|null
      */
     protected $size;
     /**
-     * @var string
+     * @var string|null
      */
     protected $comment;
 
-    /**
-     * @return string
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return self
-     */
     public function setId(?string $id): self
     {
         $this->id = $id;
@@ -57,19 +49,11 @@ class ImagesNameHistoryGetResponse200Item
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getCreated(): ?int
     {
         return $this->created;
     }
 
-    /**
-     * @param int $created
-     *
-     * @return self
-     */
     public function setCreated(?int $created): self
     {
         $this->created = $created;
@@ -77,19 +61,11 @@ class ImagesNameHistoryGetResponse200Item
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getCreatedBy(): ?string
     {
         return $this->createdBy;
     }
 
-    /**
-     * @param string $createdBy
-     *
-     * @return self
-     */
     public function setCreatedBy(?string $createdBy): self
     {
         $this->createdBy = $createdBy;
@@ -98,7 +74,7 @@ class ImagesNameHistoryGetResponse200Item
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
     public function getTags(): ?array
     {
@@ -106,9 +82,7 @@ class ImagesNameHistoryGetResponse200Item
     }
 
     /**
-     * @param string[] $tags
-     *
-     * @return self
+     * @param string[]|null $tags
      */
     public function setTags(?array $tags): self
     {
@@ -117,19 +91,11 @@ class ImagesNameHistoryGetResponse200Item
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * @param int $size
-     *
-     * @return self
-     */
     public function setSize(?int $size): self
     {
         $this->size = $size;
@@ -137,19 +103,11 @@ class ImagesNameHistoryGetResponse200Item
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    /**
-     * @param string $comment
-     *
-     * @return self
-     */
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;

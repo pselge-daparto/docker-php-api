@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class GetPluginPrivileges extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class GetPluginPrivileges extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     /**
      * @param array $queryParameters {
      *
-     *     @var string $remote The name of the plugin. The `:latest` tag is optional, and is the default if omitted.
+     *     @var string $remote The name of the plugin. The `:latest` tag is optional, and is the
+    default if omitted.
+
      * }
      */
     public function __construct(array $queryParameters = [])
@@ -23,7 +25,7 @@ class GetPluginPrivileges extends \Jane\OpenApiRuntime\Client\BaseEndpoint imple
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -35,7 +37,7 @@ class GetPluginPrivileges extends \Jane\OpenApiRuntime\Client\BaseEndpoint imple
         return '/plugins/privileges';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -61,9 +63,9 @@ class GetPluginPrivileges extends \Jane\OpenApiRuntime\Client\BaseEndpoint imple
      *
      * @throws \Docker\API\Exception\GetPluginPrivilegesInternalServerErrorException
      *
-     * @return null|\Docker\API\Model\PluginsPrivilegesGetResponse200Item[]
+     * @return \Docker\API\Model\PluginsPrivilegesGetResponse200Item[]|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\PluginsPrivilegesGetResponse200Item[]', 'json');
@@ -71,5 +73,10 @@ class GetPluginPrivileges extends \Jane\OpenApiRuntime\Client\BaseEndpoint imple
         if (500 === $status) {
             throw new \Docker\API\Exception\GetPluginPrivilegesInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

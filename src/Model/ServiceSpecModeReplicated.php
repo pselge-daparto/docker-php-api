@@ -13,23 +13,15 @@ namespace Docker\API\Model;
 class ServiceSpecModeReplicated
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $replicas;
 
-    /**
-     * @return int
-     */
     public function getReplicas(): ?int
     {
         return $this->replicas;
     }
 
-    /**
-     * @param int $replicas
-     *
-     * @return self
-     */
     public function setReplicas(?int $replicas): self
     {
         $this->replicas = $replicas;

@@ -15,20 +15,18 @@ class ThrottleDevice
     /**
      * Device path.
      *
-     * @var string
+     * @var string|null
      */
     protected $path;
     /**
      * Rate.
      *
-     * @var int
+     * @var int|null
      */
     protected $rate;
 
     /**
      * Device path.
-     *
-     * @return string
      */
     public function getPath(): ?string
     {
@@ -37,10 +35,6 @@ class ThrottleDevice
 
     /**
      * Device path.
-     *
-     * @param string $path
-     *
-     * @return self
      */
     public function setPath(?string $path): self
     {
@@ -51,8 +45,6 @@ class ThrottleDevice
 
     /**
      * Rate.
-     *
-     * @return int
      */
     public function getRate(): ?int
     {
@@ -61,10 +53,6 @@ class ThrottleDevice
 
     /**
      * Rate.
-     *
-     * @param int $rate
-     *
-     * @return self
      */
     public function setRate(?int $rate): self
     {

@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,21 +32,29 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\NetworksPrunePostResponse200;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\NetworksPrunePostResponse200';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\NetworksPrunePostResponse200();
-        if (property_exists($data, 'NetworksDeleted') && $data->{'NetworksDeleted'} !== null) {
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('NetworksDeleted', $data) && $data['NetworksDeleted'] !== null) {
             $values = [];
-            foreach ($data->{'NetworksDeleted'} as $value) {
+            foreach ($data['NetworksDeleted'] as $value) {
                 $values[] = $value;
             }
             $object->setNetworksDeleted($values);
+        } elseif (\array_key_exists('NetworksDeleted', $data) && $data['NetworksDeleted'] === null) {
+            $object->setNetworksDeleted(null);
         }
 
         return $object;
@@ -51,13 +62,13 @@ class NetworksPrunePostResponse200Normalizer implements DenormalizerInterface, N
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getNetworksDeleted()) {
             $values = [];
             foreach ($object->getNetworksDeleted() as $value) {
                 $values[] = $value;
             }
-            $data->{'NetworksDeleted'} = $values;
+            $data['NetworksDeleted'] = $values;
         }
 
         return $data;

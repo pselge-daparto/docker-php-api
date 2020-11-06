@@ -15,20 +15,18 @@ class MountVolumeOptionsDriverConfig
     /**
      * Name of the driver to use to create the volume.
      *
-     * @var string
+     * @var string|null
      */
     protected $name;
     /**
      * key/value map of driver specific options.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $options;
 
     /**
      * Name of the driver to use to create the volume.
-     *
-     * @return string
      */
     public function getName(): ?string
     {
@@ -37,10 +35,6 @@ class MountVolumeOptionsDriverConfig
 
     /**
      * Name of the driver to use to create the volume.
-     *
-     * @param string $name
-     *
-     * @return self
      */
     public function setName(?string $name): self
     {
@@ -52,9 +46,9 @@ class MountVolumeOptionsDriverConfig
     /**
      * key/value map of driver specific options.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getOptions(): ?\ArrayObject
+    public function getOptions(): ?iterable
     {
         return $this->options;
     }
@@ -62,11 +56,9 @@ class MountVolumeOptionsDriverConfig
     /**
      * key/value map of driver specific options.
      *
-     * @param string[] $options
-     *
-     * @return self
+     * @param string[]|null $options
      */
-    public function setOptions(?\ArrayObject $options): self
+    public function setOptions(?iterable $options): self
     {
         $this->options = $options;
 

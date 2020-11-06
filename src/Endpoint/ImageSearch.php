@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class ImageSearch extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class ImageSearch extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     /**
      * Search for an image on Docker Hub.
@@ -21,8 +21,6 @@ class ImageSearch extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
      *     @var int $limit Maximum number of results to return
      *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to process on the images list. Available filters:
 
-    - `is-automated=(true|false)`
-    - `is-official=(true|false)`
     - `stars=<number>` Matches images that has at least 'number' stars.
 
      * }
@@ -32,7 +30,7 @@ class ImageSearch extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -44,7 +42,7 @@ class ImageSearch extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         return '/images/search';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -72,9 +70,9 @@ class ImageSearch extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
      *
      * @throws \Docker\API\Exception\ImageSearchInternalServerErrorException
      *
-     * @return null|\Docker\API\Model\ImagesSearchGetResponse200Item[]
+     * @return \Docker\API\Model\ImagesSearchGetResponse200Item[]|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\ImagesSearchGetResponse200Item[]', 'json');
@@ -82,5 +80,10 @@ class ImageSearch extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         if (500 === $status) {
             throw new \Docker\API\Exception\ImageSearchInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

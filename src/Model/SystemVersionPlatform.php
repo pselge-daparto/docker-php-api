@@ -10,26 +10,18 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VersionGetResponse200Platform
+class SystemVersionPlatform
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $name;
 
-    /**
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
     public function setName(?string $name): self
     {
         $this->name = $name;

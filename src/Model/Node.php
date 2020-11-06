@@ -13,83 +13,57 @@ namespace Docker\API\Model;
 class Node
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $iD;
     /**
-     * The version number of the object such as node, service, etc. This is needed to avoid conflicting writes.
-    The client must send the version number along with the modified specification when updating these objects.
-    This approach ensures safe concurrency and determinism in that the change on the object
-    may not be applied if the version number has changed from the last read. In other words,
-    if two update requests specify the same base version, only one of the requests can succeed.
-    As a result, two separate update requests that happen at the same time will not
-    unintentionally overwrite each other.
-
+     * The version number of the object such as node, service, etc. This is needed.
      *
-     * @var ObjectVersion
+     * @var ObjectVersion|null
      */
     protected $version;
     /**
      * Date and time at which the node was added to the swarm in.
-    [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
-
      *
-     * @var string
+     * @var string|null
      */
     protected $createdAt;
     /**
      * Date and time at which the node was last updated in.
-    [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
-
      *
-     * @var string
+     * @var string|null
      */
     protected $updatedAt;
     /**
-     * @var NodeSpec
+     * @var NodeSpec|null
      */
     protected $spec;
     /**
      * NodeDescription encapsulates the properties of the Node as reported by the.
-    agent.
-
      *
-     * @var NodeDescription
+     * @var NodeDescription|null
      */
     protected $description;
     /**
      * NodeStatus represents the status of a node.
 
-    It provides the current status of the node, as seen by the manager.
-
      *
-     * @var NodeStatus
+     * @var NodeStatus|null
      */
     protected $status;
     /**
      * ManagerStatus represents the status of a manager.
 
-    It provides the current status of a node's manager component, if the node
-    is a manager.
-
      *
-     * @var ManagerStatus
+     * @var ManagerStatus|null
      */
     protected $managerStatus;
 
-    /**
-     * @return string
-     */
     public function getID(): ?string
     {
         return $this->iD;
     }
 
-    /**
-     * @param string $iD
-     *
-     * @return self
-     */
     public function setID(?string $iD): self
     {
         $this->iD = $iD;
@@ -98,16 +72,8 @@ class Node
     }
 
     /**
-     * The version number of the object such as node, service, etc. This is needed to avoid conflicting writes.
-    The client must send the version number along with the modified specification when updating these objects.
-    This approach ensures safe concurrency and determinism in that the change on the object
-    may not be applied if the version number has changed from the last read. In other words,
-    if two update requests specify the same base version, only one of the requests can succeed.
-    As a result, two separate update requests that happen at the same time will not
-    unintentionally overwrite each other.
-
-     *
-     * @return ObjectVersion
+     * The version number of the object such as node, service, etc. This is needed.
+    overwrite each other.
      */
     public function getVersion(): ?ObjectVersion
     {
@@ -115,18 +81,8 @@ class Node
     }
 
     /**
-     * The version number of the object such as node, service, etc. This is needed to avoid conflicting writes.
-    The client must send the version number along with the modified specification when updating these objects.
-    This approach ensures safe concurrency and determinism in that the change on the object
-    may not be applied if the version number has changed from the last read. In other words,
-    if two update requests specify the same base version, only one of the requests can succeed.
-    As a result, two separate update requests that happen at the same time will not
-    unintentionally overwrite each other.
-
-     *
-     * @param ObjectVersion $version
-     *
-     * @return self
+     * The version number of the object such as node, service, etc. This is needed.
+    overwrite each other.
      */
     public function setVersion(?ObjectVersion $version): self
     {
@@ -138,9 +94,6 @@ class Node
     /**
      * Date and time at which the node was added to the swarm in.
     [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
-
-     *
-     * @return string
      */
     public function getCreatedAt(): ?string
     {
@@ -150,11 +103,6 @@ class Node
     /**
      * Date and time at which the node was added to the swarm in.
     [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
-
-     *
-     * @param string $createdAt
-     *
-     * @return self
      */
     public function setCreatedAt(?string $createdAt): self
     {
@@ -166,9 +114,6 @@ class Node
     /**
      * Date and time at which the node was last updated in.
     [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
-
-     *
-     * @return string
      */
     public function getUpdatedAt(): ?string
     {
@@ -178,11 +123,6 @@ class Node
     /**
      * Date and time at which the node was last updated in.
     [RFC 3339](https://www.ietf.org/rfc/rfc3339.txt) format with nano-seconds.
-
-     *
-     * @param string $updatedAt
-     *
-     * @return self
      */
     public function setUpdatedAt(?string $updatedAt): self
     {
@@ -191,19 +131,11 @@ class Node
         return $this;
     }
 
-    /**
-     * @return NodeSpec
-     */
     public function getSpec(): ?NodeSpec
     {
         return $this->spec;
     }
 
-    /**
-     * @param NodeSpec $spec
-     *
-     * @return self
-     */
     public function setSpec(?NodeSpec $spec): self
     {
         $this->spec = $spec;
@@ -214,9 +146,6 @@ class Node
     /**
      * NodeDescription encapsulates the properties of the Node as reported by the.
     agent.
-
-     *
-     * @return NodeDescription
      */
     public function getDescription(): ?NodeDescription
     {
@@ -226,11 +155,6 @@ class Node
     /**
      * NodeDescription encapsulates the properties of the Node as reported by the.
     agent.
-
-     *
-     * @param NodeDescription $description
-     *
-     * @return self
      */
     public function setDescription(?NodeDescription $description): self
     {
@@ -243,9 +167,6 @@ class Node
      * NodeStatus represents the status of a node.
 
     It provides the current status of the node, as seen by the manager.
-
-     *
-     * @return NodeStatus
      */
     public function getStatus(): ?NodeStatus
     {
@@ -256,11 +177,6 @@ class Node
      * NodeStatus represents the status of a node.
 
     It provides the current status of the node, as seen by the manager.
-
-     *
-     * @param NodeStatus $status
-     *
-     * @return self
      */
     public function setStatus(?NodeStatus $status): self
     {
@@ -272,11 +188,7 @@ class Node
     /**
      * ManagerStatus represents the status of a manager.
 
-    It provides the current status of a node's manager component, if the node
     is a manager.
-
-     *
-     * @return ManagerStatus
      */
     public function getManagerStatus(): ?ManagerStatus
     {
@@ -286,13 +198,7 @@ class Node
     /**
      * ManagerStatus represents the status of a manager.
 
-    It provides the current status of a node's manager component, if the node
     is a manager.
-
-     *
-     * @param ManagerStatus $managerStatus
-     *
-     * @return self
      */
     public function setManagerStatus(?ManagerStatus $managerStatus): self
     {

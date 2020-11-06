@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class ContainerAttachWebsocket extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class ContainerAttachWebsocket extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     protected $id;
 
@@ -18,7 +18,7 @@ class ContainerAttachWebsocket extends \Jane\OpenApiRuntime\Client\BaseEndpoint 
      * @param string $id              ID or name of the container
      * @param array  $queryParameters {
      *
-     *     @var string $detachKeys Override the key sequence for detaching a container.Format is a single character `[a-Z]` or `ctrl-<value>` where `<value>` is one of: `a-z`, `@`, `^`, `[`, `,`, or `_`.
+     *     @var string $detachKeys Override the key sequence for detaching a container.Format is a single
      *     @var bool $logs Return logs
      *     @var bool $stream Return stream
      *     @var bool $stdin Attach to `stdin`
@@ -32,7 +32,7 @@ class ContainerAttachWebsocket extends \Jane\OpenApiRuntime\Client\BaseEndpoint 
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -44,7 +44,7 @@ class ContainerAttachWebsocket extends \Jane\OpenApiRuntime\Client\BaseEndpoint 
         return str_replace(['{id}'], [$this->id], '/containers/{id}/attach/ws');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -76,8 +76,10 @@ class ContainerAttachWebsocket extends \Jane\OpenApiRuntime\Client\BaseEndpoint 
      * @throws \Docker\API\Exception\ContainerAttachWebsocketBadRequestException
      * @throws \Docker\API\Exception\ContainerAttachWebsocketNotFoundException
      * @throws \Docker\API\Exception\ContainerAttachWebsocketInternalServerErrorException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (101 === $status) {
             return null;
@@ -94,5 +96,10 @@ class ContainerAttachWebsocket extends \Jane\OpenApiRuntime\Client\BaseEndpoint 
         if (500 === $status) {
             throw new \Docker\API\Exception\ContainerAttachWebsocketInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

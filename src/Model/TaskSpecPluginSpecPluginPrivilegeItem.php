@@ -13,31 +13,23 @@ namespace Docker\API\Model;
 class TaskSpecPluginSpecPluginPrivilegeItem
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $name;
     /**
-     * @var string
+     * @var string|null
      */
     protected $description;
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $value;
 
-    /**
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
     public function setName(?string $name): self
     {
         $this->name = $name;
@@ -45,19 +37,11 @@ class TaskSpecPluginSpecPluginPrivilegeItem
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     *
-     * @return self
-     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -66,7 +50,7 @@ class TaskSpecPluginSpecPluginPrivilegeItem
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
     public function getValue(): ?array
     {
@@ -74,9 +58,7 @@ class TaskSpecPluginSpecPluginPrivilegeItem
     }
 
     /**
-     * @param string[] $value
-     *
-     * @return self
+     * @param string[]|null $value
      */
     public function setValue(?array $value): self
     {

@@ -10,13 +10,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class NetworkConnect extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class NetworkConnect extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     protected $id;
 
     /**
-     * @param string                                      $id        Network ID or name
-     * @param \Docker\API\Model\NetworksIdConnectPostBody $container
+     * @param string $id Network ID or name
      */
     public function __construct(string $id, \Docker\API\Model\NetworksIdConnectPostBody $container)
     {
@@ -24,7 +23,7 @@ class NetworkConnect extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
         $this->body = $container;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -36,7 +35,7 @@ class NetworkConnect extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
         return str_replace(['{id}'], [$this->id], '/networks/{id}/connect');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return $this->getSerializedBody($serializer);
     }
@@ -52,8 +51,10 @@ class NetworkConnect extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
      * @throws \Docker\API\Exception\NetworkConnectForbiddenException
      * @throws \Docker\API\Exception\NetworkConnectNotFoundException
      * @throws \Docker\API\Exception\NetworkConnectInternalServerErrorException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return null;
@@ -67,5 +68,10 @@ class NetworkConnect extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements
         if (500 === $status) {
             throw new \Docker\API\Exception\NetworkConnectInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

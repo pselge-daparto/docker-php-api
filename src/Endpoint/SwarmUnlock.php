@@ -10,17 +10,14 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class SwarmUnlock extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class SwarmUnlock extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
-    /**
-     * @param \Docker\API\Model\SwarmUnlockPostBody $body
-     */
     public function __construct(\Docker\API\Model\SwarmUnlockPostBody $body)
     {
         $this->body = $body;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -32,7 +29,7 @@ class SwarmUnlock extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         return '/swarm/unlock';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return $this->getSerializedBody($serializer);
     }
@@ -47,8 +44,10 @@ class SwarmUnlock extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
      *
      * @throws \Docker\API\Exception\SwarmUnlockInternalServerErrorException
      * @throws \Docker\API\Exception\SwarmUnlockServiceUnavailableException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return null;
@@ -59,5 +58,10 @@ class SwarmUnlock extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         if (503 === $status) {
             throw new \Docker\API\Exception\SwarmUnlockServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

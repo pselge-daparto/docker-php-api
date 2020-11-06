@@ -15,14 +15,12 @@ class SwarmUnlockkeyGetResponse200
     /**
      * The swarm's unlock key.
      *
-     * @var string
+     * @var string|null
      */
     protected $unlockKey;
 
     /**
      * The swarm's unlock key.
-     *
-     * @return string
      */
     public function getUnlockKey(): ?string
     {
@@ -31,10 +29,6 @@ class SwarmUnlockkeyGetResponse200
 
     /**
      * The swarm's unlock key.
-     *
-     * @param string $unlockKey
-     *
-     * @return self
      */
     public function setUnlockKey(?string $unlockKey): self
     {

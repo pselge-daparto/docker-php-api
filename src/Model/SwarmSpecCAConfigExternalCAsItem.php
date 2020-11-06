@@ -13,34 +13,33 @@ namespace Docker\API\Model;
 class SwarmSpecCAConfigExternalCAsItem
 {
     /**
-     * Protocol for communication with the external CA (currently only `cfssl` is supported).
+     * Protocol for communication with the external CA (currently.
      *
-     * @var string
+     * @var string|null
      */
-    protected $protocol;
+    protected $protocol = 'cfssl';
     /**
      * URL where certificate signing requests should be sent.
      *
-     * @var string
+     * @var string|null
      */
     protected $uRL;
     /**
-     * An object with key/value pairs that are interpreted as protocol-specific options for the external CA driver.
+     * An object with key/value pairs that are interpreted as.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $options;
     /**
-     * The root CA certificate (in PEM format) this external CA uses to issue TLS certificates (assumed to be to the current swarm root CA certificate if not provided).
+     * The root CA certificate (in PEM format) this external CA uses.
      *
-     * @var string
+     * @var string|null
      */
     protected $cACert;
 
     /**
-     * Protocol for communication with the external CA (currently only `cfssl` is supported).
-     *
-     * @return string
+     * Protocol for communication with the external CA (currently.
+    only `cfssl` is supported).
      */
     public function getProtocol(): ?string
     {
@@ -48,11 +47,8 @@ class SwarmSpecCAConfigExternalCAsItem
     }
 
     /**
-     * Protocol for communication with the external CA (currently only `cfssl` is supported).
-     *
-     * @param string $protocol
-     *
-     * @return self
+     * Protocol for communication with the external CA (currently.
+    only `cfssl` is supported).
      */
     public function setProtocol(?string $protocol): self
     {
@@ -63,8 +59,6 @@ class SwarmSpecCAConfigExternalCAsItem
 
     /**
      * URL where certificate signing requests should be sent.
-     *
-     * @return string
      */
     public function getURL(): ?string
     {
@@ -73,10 +67,6 @@ class SwarmSpecCAConfigExternalCAsItem
 
     /**
      * URL where certificate signing requests should be sent.
-     *
-     * @param string $uRL
-     *
-     * @return self
      */
     public function setURL(?string $uRL): self
     {
@@ -86,23 +76,21 @@ class SwarmSpecCAConfigExternalCAsItem
     }
 
     /**
-     * An object with key/value pairs that are interpreted as protocol-specific options for the external CA driver.
+     * An object with key/value pairs that are interpreted as.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getOptions(): ?\ArrayObject
+    public function getOptions(): ?iterable
     {
         return $this->options;
     }
 
     /**
-     * An object with key/value pairs that are interpreted as protocol-specific options for the external CA driver.
+     * An object with key/value pairs that are interpreted as.
      *
-     * @param string[] $options
-     *
-     * @return self
+     * @param string[]|null $options
      */
-    public function setOptions(?\ArrayObject $options): self
+    public function setOptions(?iterable $options): self
     {
         $this->options = $options;
 
@@ -110,9 +98,8 @@ class SwarmSpecCAConfigExternalCAsItem
     }
 
     /**
-     * The root CA certificate (in PEM format) this external CA uses to issue TLS certificates (assumed to be to the current swarm root CA certificate if not provided).
-     *
-     * @return string
+     * The root CA certificate (in PEM format) this external CA uses.
+    root CA certificate if not provided).
      */
     public function getCACert(): ?string
     {
@@ -120,11 +107,8 @@ class SwarmSpecCAConfigExternalCAsItem
     }
 
     /**
-     * The root CA certificate (in PEM format) this external CA uses to issue TLS certificates (assumed to be to the current swarm root CA certificate if not provided).
-     *
-     * @param string $cACert
-     *
-     * @return self
+     * The root CA certificate (in PEM format) this external CA uses.
+    root CA certificate if not provided).
      */
     public function setCACert(?string $cACert): self
     {

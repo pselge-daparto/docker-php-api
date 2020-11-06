@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,24 +32,34 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\Runtime;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\Runtime';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\Runtime();
-        if (property_exists($data, 'path') && $data->{'path'} !== null) {
-            $object->setPath($data->{'path'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'runtimeArgs') && $data->{'runtimeArgs'} !== null) {
+        if (\array_key_exists('path', $data) && $data['path'] !== null) {
+            $object->setPath($data['path']);
+        } elseif (\array_key_exists('path', $data) && $data['path'] === null) {
+            $object->setPath(null);
+        }
+        if (\array_key_exists('runtimeArgs', $data) && $data['runtimeArgs'] !== null) {
             $values = [];
-            foreach ($data->{'runtimeArgs'} as $value) {
+            foreach ($data['runtimeArgs'] as $value) {
                 $values[] = $value;
             }
             $object->setRuntimeArgs($values);
+        } elseif (\array_key_exists('runtimeArgs', $data) && $data['runtimeArgs'] === null) {
+            $object->setRuntimeArgs(null);
         }
 
         return $object;
@@ -54,16 +67,16 @@ class RuntimeNormalizer implements DenormalizerInterface, NormalizerInterface, D
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getPath()) {
-            $data->{'path'} = $object->getPath();
+            $data['path'] = $object->getPath();
         }
         if (null !== $object->getRuntimeArgs()) {
             $values = [];
             foreach ($object->getRuntimeArgs() as $value) {
                 $values[] = $value;
             }
-            $data->{'runtimeArgs'} = $values;
+            $data['runtimeArgs'] = $values;
         }
 
         return $data;

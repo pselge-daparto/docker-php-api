@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class IdResponseNormalizer implements DenormalizerInterface, NormalizerInterface
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,17 +32,25 @@ class IdResponseNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\IdResponse;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\IdResponse';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\IdResponse();
-        if (property_exists($data, 'Id') && $data->{'Id'} !== null) {
-            $object->setId($data->{'Id'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('Id', $data) && $data['Id'] !== null) {
+            $object->setId($data['Id']);
+        } elseif (\array_key_exists('Id', $data) && $data['Id'] === null) {
+            $object->setId(null);
         }
 
         return $object;
@@ -47,10 +58,8 @@ class IdResponseNormalizer implements DenormalizerInterface, NormalizerInterface
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
-        if (null !== $object->getId()) {
-            $data->{'Id'} = $object->getId();
-        }
+        $data = [];
+        $data['Id'] = $object->getId();
 
         return $data;
     }

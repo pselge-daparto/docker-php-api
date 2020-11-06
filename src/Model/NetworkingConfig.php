@@ -10,21 +10,21 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class ContainersCreatePostBodyNetworkingConfig
+class NetworkingConfig
 {
     /**
      * A mapping of network name to endpoint configuration for that network.
      *
-     * @var EndpointSettings[]
+     * @var EndpointSettings[]|null
      */
     protected $endpointsConfig;
 
     /**
      * A mapping of network name to endpoint configuration for that network.
      *
-     * @return EndpointSettings[]
+     * @return EndpointSettings[]|null
      */
-    public function getEndpointsConfig(): ?\ArrayObject
+    public function getEndpointsConfig(): ?iterable
     {
         return $this->endpointsConfig;
     }
@@ -32,11 +32,9 @@ class ContainersCreatePostBodyNetworkingConfig
     /**
      * A mapping of network name to endpoint configuration for that network.
      *
-     * @param EndpointSettings[] $endpointsConfig
-     *
-     * @return self
+     * @param EndpointSettings[]|null $endpointsConfig
      */
-    public function setEndpointsConfig(?\ArrayObject $endpointsConfig): self
+    public function setEndpointsConfig(?iterable $endpointsConfig): self
     {
         $this->endpointsConfig = $endpointsConfig;
 

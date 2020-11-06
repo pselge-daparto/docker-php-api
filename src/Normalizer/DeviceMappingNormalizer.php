@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,23 +32,35 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\DeviceMapping;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\DeviceMapping';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\DeviceMapping();
-        if (property_exists($data, 'PathOnHost') && $data->{'PathOnHost'} !== null) {
-            $object->setPathOnHost($data->{'PathOnHost'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'PathInContainer') && $data->{'PathInContainer'} !== null) {
-            $object->setPathInContainer($data->{'PathInContainer'});
+        if (\array_key_exists('PathOnHost', $data) && $data['PathOnHost'] !== null) {
+            $object->setPathOnHost($data['PathOnHost']);
+        } elseif (\array_key_exists('PathOnHost', $data) && $data['PathOnHost'] === null) {
+            $object->setPathOnHost(null);
         }
-        if (property_exists($data, 'CgroupPermissions') && $data->{'CgroupPermissions'} !== null) {
-            $object->setCgroupPermissions($data->{'CgroupPermissions'});
+        if (\array_key_exists('PathInContainer', $data) && $data['PathInContainer'] !== null) {
+            $object->setPathInContainer($data['PathInContainer']);
+        } elseif (\array_key_exists('PathInContainer', $data) && $data['PathInContainer'] === null) {
+            $object->setPathInContainer(null);
+        }
+        if (\array_key_exists('CgroupPermissions', $data) && $data['CgroupPermissions'] !== null) {
+            $object->setCgroupPermissions($data['CgroupPermissions']);
+        } elseif (\array_key_exists('CgroupPermissions', $data) && $data['CgroupPermissions'] === null) {
+            $object->setCgroupPermissions(null);
         }
 
         return $object;
@@ -53,15 +68,15 @@ class DeviceMappingNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getPathOnHost()) {
-            $data->{'PathOnHost'} = $object->getPathOnHost();
+            $data['PathOnHost'] = $object->getPathOnHost();
         }
         if (null !== $object->getPathInContainer()) {
-            $data->{'PathInContainer'} = $object->getPathInContainer();
+            $data['PathInContainer'] = $object->getPathInContainer();
         }
         if (null !== $object->getCgroupPermissions()) {
-            $data->{'CgroupPermissions'} = $object->getCgroupPermissions();
+            $data['CgroupPermissions'] = $object->getCgroupPermissions();
         }
 
         return $data;

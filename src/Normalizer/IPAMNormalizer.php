@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,21 +32,29 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\IPAM;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\IPAM';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\IPAM();
-        if (property_exists($data, 'Driver') && $data->{'Driver'} !== null) {
-            $object->setDriver($data->{'Driver'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'Config') && $data->{'Config'} !== null) {
+        if (\array_key_exists('Driver', $data) && $data['Driver'] !== null) {
+            $object->setDriver($data['Driver']);
+        } elseif (\array_key_exists('Driver', $data) && $data['Driver'] === null) {
+            $object->setDriver(null);
+        }
+        if (\array_key_exists('Config', $data) && $data['Config'] !== null) {
             $values = [];
-            foreach ($data->{'Config'} as $value) {
+            foreach ($data['Config'] as $value) {
                 $values_1 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
                 foreach ($value as $key => $value_1) {
                     $values_1[$key] = $value_1;
@@ -51,17 +62,17 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
                 $values[] = $values_1;
             }
             $object->setConfig($values);
+        } elseif (\array_key_exists('Config', $data) && $data['Config'] === null) {
+            $object->setConfig(null);
         }
-        if (property_exists($data, 'Options') && $data->{'Options'} !== null) {
-            $values_2 = [];
-            foreach ($data->{'Options'} as $value_2) {
-                $values_3 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-                foreach ($value_2 as $key_1 => $value_3) {
-                    $values_3[$key_1] = $value_3;
-                }
-                $values_2[] = $values_3;
+        if (\array_key_exists('Options', $data) && $data['Options'] !== null) {
+            $values_2 = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
+            foreach ($data['Options'] as $key_1 => $value_2) {
+                $values_2[$key_1] = $value_2;
             }
             $object->setOptions($values_2);
+        } elseif (\array_key_exists('Options', $data) && $data['Options'] === null) {
+            $object->setOptions(null);
         }
 
         return $object;
@@ -69,31 +80,27 @@ class IPAMNormalizer implements DenormalizerInterface, NormalizerInterface, Deno
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getDriver()) {
-            $data->{'Driver'} = $object->getDriver();
+            $data['Driver'] = $object->getDriver();
         }
         if (null !== $object->getConfig()) {
             $values = [];
             foreach ($object->getConfig() as $value) {
-                $values_1 = new \stdClass();
+                $values_1 = [];
                 foreach ($value as $key => $value_1) {
-                    $values_1->{$key} = $value_1;
+                    $values_1[$key] = $value_1;
                 }
                 $values[] = $values_1;
             }
-            $data->{'Config'} = $values;
+            $data['Config'] = $values;
         }
         if (null !== $object->getOptions()) {
             $values_2 = [];
-            foreach ($object->getOptions() as $value_2) {
-                $values_3 = new \stdClass();
-                foreach ($value_2 as $key_1 => $value_3) {
-                    $values_3->{$key_1} = $value_3;
-                }
-                $values_2[] = $values_3;
+            foreach ($object->getOptions() as $key_1 => $value_2) {
+                $values_2[$key_1] = $value_2;
             }
-            $data->{'Options'} = $values_2;
+            $data['Options'] = $values_2;
         }
 
         return $data;

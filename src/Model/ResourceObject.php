@@ -13,33 +13,25 @@ namespace Docker\API\Model;
 class ResourceObject
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $nanoCPUs;
     /**
-     * @var int
+     * @var int|null
      */
     protected $memoryBytes;
     /**
-     * User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, `GPU=UUID1`).
+     * User-defined resources can be either Integer resources (e.g, `SSD=3`) or.
      *
-     * @var GenericResourcesItem[]
+     * @var GenericResourcesItem[]|null
      */
     protected $genericResources;
 
-    /**
-     * @return int
-     */
     public function getNanoCPUs(): ?int
     {
         return $this->nanoCPUs;
     }
 
-    /**
-     * @param int $nanoCPUs
-     *
-     * @return self
-     */
     public function setNanoCPUs(?int $nanoCPUs): self
     {
         $this->nanoCPUs = $nanoCPUs;
@@ -47,19 +39,11 @@ class ResourceObject
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getMemoryBytes(): ?int
     {
         return $this->memoryBytes;
     }
 
-    /**
-     * @param int $memoryBytes
-     *
-     * @return self
-     */
     public function setMemoryBytes(?int $memoryBytes): self
     {
         $this->memoryBytes = $memoryBytes;
@@ -68,9 +52,9 @@ class ResourceObject
     }
 
     /**
-     * User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, `GPU=UUID1`).
+     * User-defined resources can be either Integer resources (e.g, `SSD=3`) or.
      *
-     * @return GenericResourcesItem[]
+     * @return GenericResourcesItem[]|null
      */
     public function getGenericResources(): ?array
     {
@@ -78,11 +62,9 @@ class ResourceObject
     }
 
     /**
-     * User-defined resources can be either Integer resources (e.g, `SSD=3`) or String resources (e.g, `GPU=UUID1`).
+     * User-defined resources can be either Integer resources (e.g, `SSD=3`) or.
      *
-     * @param GenericResourcesItem[] $genericResources
-     *
-     * @return self
+     * @param GenericResourcesItem[]|null $genericResources
      */
     public function setGenericResources(?array $genericResources): self
     {

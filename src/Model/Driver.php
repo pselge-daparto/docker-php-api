@@ -15,20 +15,18 @@ class Driver
     /**
      * Name of the driver.
      *
-     * @var string
+     * @var string|null
      */
     protected $name;
     /**
      * Key/value map of driver-specific options.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $options;
 
     /**
      * Name of the driver.
-     *
-     * @return string
      */
     public function getName(): ?string
     {
@@ -37,10 +35,6 @@ class Driver
 
     /**
      * Name of the driver.
-     *
-     * @param string $name
-     *
-     * @return self
      */
     public function setName(?string $name): self
     {
@@ -52,9 +46,9 @@ class Driver
     /**
      * Key/value map of driver-specific options.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getOptions(): ?\ArrayObject
+    public function getOptions(): ?iterable
     {
         return $this->options;
     }
@@ -62,11 +56,9 @@ class Driver
     /**
      * Key/value map of driver-specific options.
      *
-     * @param string[] $options
-     *
-     * @return self
+     * @param string[]|null $options
      */
-    public function setOptions(?\ArrayObject $options): self
+    public function setOptions(?iterable $options): self
     {
         $this->options = $options;
 

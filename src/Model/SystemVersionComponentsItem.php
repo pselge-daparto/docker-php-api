@@ -10,23 +10,29 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VersionGetResponse200ComponentsItem
+class SystemVersionComponentsItem
 {
     /**
-     * @var string
+     * Name of the component.
+     *
+     * @var string|null
      */
     protected $name;
     /**
-     * @var string
+     * Version of the component.
+     *
+     * @var string|null
      */
     protected $version;
     /**
-     * @var mixed
+     * Key/value pairs of strings with additional information about the.
+     *
+     * @var mixed|null
      */
     protected $details;
 
     /**
-     * @return string
+     * Name of the component.
      */
     public function getName(): ?string
     {
@@ -34,9 +40,7 @@ class VersionGetResponse200ComponentsItem
     }
 
     /**
-     * @param string $name
-     *
-     * @return self
+     * Name of the component.
      */
     public function setName(?string $name): self
     {
@@ -46,7 +50,7 @@ class VersionGetResponse200ComponentsItem
     }
 
     /**
-     * @return string
+     * Version of the component.
      */
     public function getVersion(): ?string
     {
@@ -54,9 +58,7 @@ class VersionGetResponse200ComponentsItem
     }
 
     /**
-     * @param string $version
-     *
-     * @return self
+     * Version of the component.
      */
     public function setVersion(?string $version): self
     {
@@ -66,6 +68,8 @@ class VersionGetResponse200ComponentsItem
     }
 
     /**
+     * Key/value pairs of strings with additional information about the.
+     *
      * @return mixed
      */
     public function getDetails()
@@ -74,9 +78,9 @@ class VersionGetResponse200ComponentsItem
     }
 
     /**
-     * @param mixed $details
+     * Key/value pairs of strings with additional information about the.
      *
-     * @return self
+     * @param mixed $details
      */
     public function setDetails($details): self
     {

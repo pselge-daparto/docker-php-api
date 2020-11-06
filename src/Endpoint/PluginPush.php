@@ -10,21 +10,22 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class PluginPush extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class PluginPush extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     protected $name;
 
     /**
      * Push a plugin to the registry.
      *
-     * @param string $name The name of the plugin. The `:latest` tag is optional, and is the default if omitted.
+     * @param string $name The name of the plugin. The `:latest` tag is optional, and is the
+    default if omitted.
      */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -36,7 +37,7 @@ class PluginPush extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         return str_replace(['{name}'], [$this->name], '/plugins/{name}/push');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -51,8 +52,10 @@ class PluginPush extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
      *
      * @throws \Docker\API\Exception\PluginPushNotFoundException
      * @throws \Docker\API\Exception\PluginPushInternalServerErrorException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return null;
@@ -63,5 +66,10 @@ class PluginPush extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         if (500 === $status) {
             throw new \Docker\API\Exception\PluginPushInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

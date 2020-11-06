@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,20 +32,30 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\TaskSpecResources;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\TaskSpecResources';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\TaskSpecResources();
-        if (property_exists($data, 'Limits') && $data->{'Limits'} !== null) {
-            $object->setLimits($this->denormalizer->denormalize($data->{'Limits'}, 'Docker\\API\\Model\\ResourceObject', 'json', $context));
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'Reservation') && $data->{'Reservation'} !== null) {
-            $object->setReservation($this->denormalizer->denormalize($data->{'Reservation'}, 'Docker\\API\\Model\\ResourceObject', 'json', $context));
+        if (\array_key_exists('Limits', $data) && $data['Limits'] !== null) {
+            $object->setLimits($this->denormalizer->denormalize($data['Limits'], 'Docker\\API\\Model\\ResourceObject', 'json', $context));
+        } elseif (\array_key_exists('Limits', $data) && $data['Limits'] === null) {
+            $object->setLimits(null);
+        }
+        if (\array_key_exists('Reservation', $data) && $data['Reservation'] !== null) {
+            $object->setReservation($this->denormalizer->denormalize($data['Reservation'], 'Docker\\API\\Model\\ResourceObject', 'json', $context));
+        } elseif (\array_key_exists('Reservation', $data) && $data['Reservation'] === null) {
+            $object->setReservation(null);
         }
 
         return $object;
@@ -50,12 +63,12 @@ class TaskSpecResourcesNormalizer implements DenormalizerInterface, NormalizerIn
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getLimits()) {
-            $data->{'Limits'} = $this->normalizer->normalize($object->getLimits(), 'json', $context);
+            $data['Limits'] = $this->normalizer->normalize($object->getLimits(), 'json', $context);
         }
         if (null !== $object->getReservation()) {
-            $data->{'Reservation'} = $this->normalizer->normalize($object->getReservation(), 'json', $context);
+            $data['Reservation'] = $this->normalizer->normalize($object->getReservation(), 'json', $context);
         }
 
         return $data;

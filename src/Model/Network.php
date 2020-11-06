@@ -13,71 +13,63 @@ namespace Docker\API\Model;
 class Network
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $name;
     /**
-     * @var string
+     * @var string|null
      */
     protected $id;
     /**
-     * @var string
+     * @var string|null
      */
     protected $created;
     /**
-     * @var string
+     * @var string|null
      */
     protected $scope;
     /**
-     * @var string
+     * @var string|null
      */
     protected $driver;
     /**
-     * @var bool
+     * @var bool|null
      */
     protected $enableIPv6;
     /**
-     * @var IPAM
+     * @var IPAM|null
      */
     protected $iPAM;
     /**
-     * @var bool
+     * @var bool|null
      */
     protected $internal;
     /**
-     * @var bool
+     * @var bool|null
      */
     protected $attachable;
     /**
-     * @var bool
+     * @var bool|null
      */
     protected $ingress;
     /**
-     * @var NetworkContainer[]
+     * @var NetworkContainer[]|null
      */
     protected $containers;
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $options;
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $labels;
 
-    /**
-     * @return string
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return self
-     */
     public function setName(?string $name): self
     {
         $this->name = $name;
@@ -85,19 +77,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return self
-     */
     public function setId(?string $id): self
     {
         $this->id = $id;
@@ -105,19 +89,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getCreated(): ?string
     {
         return $this->created;
     }
 
-    /**
-     * @param string $created
-     *
-     * @return self
-     */
     public function setCreated(?string $created): self
     {
         $this->created = $created;
@@ -125,19 +101,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getScope(): ?string
     {
         return $this->scope;
     }
 
-    /**
-     * @param string $scope
-     *
-     * @return self
-     */
     public function setScope(?string $scope): self
     {
         $this->scope = $scope;
@@ -145,19 +113,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDriver(): ?string
     {
         return $this->driver;
     }
 
-    /**
-     * @param string $driver
-     *
-     * @return self
-     */
     public function setDriver(?string $driver): self
     {
         $this->driver = $driver;
@@ -165,19 +125,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getEnableIPv6(): ?bool
     {
         return $this->enableIPv6;
     }
 
-    /**
-     * @param bool $enableIPv6
-     *
-     * @return self
-     */
     public function setEnableIPv6(?bool $enableIPv6): self
     {
         $this->enableIPv6 = $enableIPv6;
@@ -185,19 +137,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return IPAM
-     */
     public function getIPAM(): ?IPAM
     {
         return $this->iPAM;
     }
 
-    /**
-     * @param IPAM $iPAM
-     *
-     * @return self
-     */
     public function setIPAM(?IPAM $iPAM): self
     {
         $this->iPAM = $iPAM;
@@ -205,19 +149,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getInternal(): ?bool
     {
         return $this->internal;
     }
 
-    /**
-     * @param bool $internal
-     *
-     * @return self
-     */
     public function setInternal(?bool $internal): self
     {
         $this->internal = $internal;
@@ -225,19 +161,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getAttachable(): ?bool
     {
         return $this->attachable;
     }
 
-    /**
-     * @param bool $attachable
-     *
-     * @return self
-     */
     public function setAttachable(?bool $attachable): self
     {
         $this->attachable = $attachable;
@@ -245,19 +173,11 @@ class Network
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getIngress(): ?bool
     {
         return $this->ingress;
     }
 
-    /**
-     * @param bool $ingress
-     *
-     * @return self
-     */
     public function setIngress(?bool $ingress): self
     {
         $this->ingress = $ingress;
@@ -266,19 +186,17 @@ class Network
     }
 
     /**
-     * @return NetworkContainer[]
+     * @return NetworkContainer[]|null
      */
-    public function getContainers(): ?\ArrayObject
+    public function getContainers(): ?iterable
     {
         return $this->containers;
     }
 
     /**
-     * @param NetworkContainer[] $containers
-     *
-     * @return self
+     * @param NetworkContainer[]|null $containers
      */
-    public function setContainers(?\ArrayObject $containers): self
+    public function setContainers(?iterable $containers): self
     {
         $this->containers = $containers;
 
@@ -286,19 +204,17 @@ class Network
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getOptions(): ?\ArrayObject
+    public function getOptions(): ?iterable
     {
         return $this->options;
     }
 
     /**
-     * @param string[] $options
-     *
-     * @return self
+     * @param string[]|null $options
      */
-    public function setOptions(?\ArrayObject $options): self
+    public function setOptions(?iterable $options): self
     {
         $this->options = $options;
 
@@ -306,19 +222,17 @@ class Network
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getLabels(): ?\ArrayObject
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
 
     /**
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
-    public function setLabels(?\ArrayObject $labels): self
+    public function setLabels(?iterable $labels): self
     {
         $this->labels = $labels;
 

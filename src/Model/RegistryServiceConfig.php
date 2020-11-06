@@ -14,124 +14,49 @@ class RegistryServiceConfig
 {
     /**
      * List of IP ranges to which nondistributable artifacts can be pushed,.
-    using the CIDR syntax [RFC 4632](https://tools.ietf.org/html/4632).
-
-    Some images (for example, Windows base images) contain artifacts
-    whose distribution is restricted by license. When these images are
-    pushed to a registry, restricted artifacts are not included.
-
-    This configuration override this behavior, and enables the daemon to
-    push nondistributable artifacts to all registries whose resolved IP
-    address is within the subnet described by the CIDR syntax.
-
-    This option is useful when pushing images containing
-    nondistributable artifacts to a registry on an air-gapped network so
-    hosts on that network can pull the images without connecting to
     another server.
 
     > **Warning**: Nondistributable artifacts typically have restrictions
-    > on how and where they can be distributed and shared. Only use this
-    > feature to push artifacts to private registries and ensure that you
-    > are in compliance with any terms that cover redistributing
-    > nondistributable artifacts.
-
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $allowNondistributableArtifactsCIDRs;
     /**
      * List of registry hostnames to which nondistributable artifacts can be.
-    pushed, using the format `<hostname>[:<port>]` or `<IP address>[:<port>]`.
-
-    Some images (for example, Windows base images) contain artifacts
-    whose distribution is restricted by license. When these images are
-    pushed to a registry, restricted artifacts are not included.
-
-    This configuration override this behavior for the specified
-    registries.
-
-    This option is useful when pushing images containing
-    nondistributable artifacts to a registry on an air-gapped network so
-    hosts on that network can pull the images without connecting to
     another server.
 
     > **Warning**: Nondistributable artifacts typically have restrictions
-    > on how and where they can be distributed and shared. Only use this
-    > feature to push artifacts to private registries and ensure that you
-    > are in compliance with any terms that cover redistributing
-    > nondistributable artifacts.
-
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $allowNondistributableArtifactsHostnames;
     /**
      * List of IP ranges of insecure registries, using the CIDR syntax.
-    ([RFC 4632](https://tools.ietf.org/html/4632)). Insecure registries
-    accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates
-    from unknown CAs) communication.
-
-    By default, local registries (`127.0.0.0/8`) are configured as
-    insecure. All other registries are secure. Communicating with an
-    insecure registry is not possible if the daemon assumes that registry
-    is secure.
-
-    This configuration override this behavior, insecure communication with
-    registries whose resolved IP address is within the subnet described by
-    the CIDR syntax.
-
-    Registries can also be marked insecure by hostname. Those registries
-    are listed under `IndexConfigs` and have their `Secure` field set to
     `false`.
 
     > **Warning**: Using this option can be useful when running a local
-    > registry, but introduces security vulnerabilities. This option
-    > should therefore ONLY be used for testing purposes. For increased
-    > security, users should add their CA to their system's list of trusted
-    > CAs instead of enabling this option.
-
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $insecureRegistryCIDRs;
     /**
-     * @var IndexInfo[]
+     * @var IndexInfo[]|null
      */
     protected $indexConfigs;
     /**
      * List of registry URLs that act as a mirror for the official.
-    (`docker.io`) registry.
-
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $mirrors;
 
     /**
      * List of IP ranges to which nondistributable artifacts can be pushed,.
-    using the CIDR syntax [RFC 4632](https://tools.ietf.org/html/4632).
-
-    Some images (for example, Windows base images) contain artifacts
-    whose distribution is restricted by license. When these images are
-    pushed to a registry, restricted artifacts are not included.
-
-    This configuration override this behavior, and enables the daemon to
-    push nondistributable artifacts to all registries whose resolved IP
-    address is within the subnet described by the CIDR syntax.
-
-    This option is useful when pushing images containing
-    nondistributable artifacts to a registry on an air-gapped network so
-    hosts on that network can pull the images without connecting to
     another server.
 
     > **Warning**: Nondistributable artifacts typically have restrictions
-    > on how and where they can be distributed and shared. Only use this
-    > feature to push artifacts to private registries and ensure that you
-    > are in compliance with any terms that cover redistributing
-    > nondistributable artifacts.
-
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getAllowNondistributableArtifactsCIDRs(): ?array
     {
@@ -140,31 +65,11 @@ class RegistryServiceConfig
 
     /**
      * List of IP ranges to which nondistributable artifacts can be pushed,.
-    using the CIDR syntax [RFC 4632](https://tools.ietf.org/html/4632).
-
-    Some images (for example, Windows base images) contain artifacts
-    whose distribution is restricted by license. When these images are
-    pushed to a registry, restricted artifacts are not included.
-
-    This configuration override this behavior, and enables the daemon to
-    push nondistributable artifacts to all registries whose resolved IP
-    address is within the subnet described by the CIDR syntax.
-
-    This option is useful when pushing images containing
-    nondistributable artifacts to a registry on an air-gapped network so
-    hosts on that network can pull the images without connecting to
     another server.
 
     > **Warning**: Nondistributable artifacts typically have restrictions
-    > on how and where they can be distributed and shared. Only use this
-    > feature to push artifacts to private registries and ensure that you
-    > are in compliance with any terms that cover redistributing
-    > nondistributable artifacts.
-
      *
-     * @param string[] $allowNondistributableArtifactsCIDRs
-     *
-     * @return self
+     * @param string[]|null $allowNondistributableArtifactsCIDRs
      */
     public function setAllowNondistributableArtifactsCIDRs(?array $allowNondistributableArtifactsCIDRs): self
     {
@@ -175,28 +80,11 @@ class RegistryServiceConfig
 
     /**
      * List of registry hostnames to which nondistributable artifacts can be.
-    pushed, using the format `<hostname>[:<port>]` or `<IP address>[:<port>]`.
-
-    Some images (for example, Windows base images) contain artifacts
-    whose distribution is restricted by license. When these images are
-    pushed to a registry, restricted artifacts are not included.
-
-    This configuration override this behavior for the specified
-    registries.
-
-    This option is useful when pushing images containing
-    nondistributable artifacts to a registry on an air-gapped network so
-    hosts on that network can pull the images without connecting to
     another server.
 
     > **Warning**: Nondistributable artifacts typically have restrictions
-    > on how and where they can be distributed and shared. Only use this
-    > feature to push artifacts to private registries and ensure that you
-    > are in compliance with any terms that cover redistributing
-    > nondistributable artifacts.
-
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getAllowNondistributableArtifactsHostnames(): ?array
     {
@@ -205,30 +93,11 @@ class RegistryServiceConfig
 
     /**
      * List of registry hostnames to which nondistributable artifacts can be.
-    pushed, using the format `<hostname>[:<port>]` or `<IP address>[:<port>]`.
-
-    Some images (for example, Windows base images) contain artifacts
-    whose distribution is restricted by license. When these images are
-    pushed to a registry, restricted artifacts are not included.
-
-    This configuration override this behavior for the specified
-    registries.
-
-    This option is useful when pushing images containing
-    nondistributable artifacts to a registry on an air-gapped network so
-    hosts on that network can pull the images without connecting to
     another server.
 
     > **Warning**: Nondistributable artifacts typically have restrictions
-    > on how and where they can be distributed and shared. Only use this
-    > feature to push artifacts to private registries and ensure that you
-    > are in compliance with any terms that cover redistributing
-    > nondistributable artifacts.
-
      *
-     * @param string[] $allowNondistributableArtifactsHostnames
-     *
-     * @return self
+     * @param string[]|null $allowNondistributableArtifactsHostnames
      */
     public function setAllowNondistributableArtifactsHostnames(?array $allowNondistributableArtifactsHostnames): self
     {
@@ -239,31 +108,11 @@ class RegistryServiceConfig
 
     /**
      * List of IP ranges of insecure registries, using the CIDR syntax.
-    ([RFC 4632](https://tools.ietf.org/html/4632)). Insecure registries
-    accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates
-    from unknown CAs) communication.
-
-    By default, local registries (`127.0.0.0/8`) are configured as
-    insecure. All other registries are secure. Communicating with an
-    insecure registry is not possible if the daemon assumes that registry
-    is secure.
-
-    This configuration override this behavior, insecure communication with
-    registries whose resolved IP address is within the subnet described by
-    the CIDR syntax.
-
-    Registries can also be marked insecure by hostname. Those registries
-    are listed under `IndexConfigs` and have their `Secure` field set to
     `false`.
 
     > **Warning**: Using this option can be useful when running a local
-    > registry, but introduces security vulnerabilities. This option
-    > should therefore ONLY be used for testing purposes. For increased
-    > security, users should add their CA to their system's list of trusted
-    > CAs instead of enabling this option.
-
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getInsecureRegistryCIDRs(): ?array
     {
@@ -272,33 +121,11 @@ class RegistryServiceConfig
 
     /**
      * List of IP ranges of insecure registries, using the CIDR syntax.
-    ([RFC 4632](https://tools.ietf.org/html/4632)). Insecure registries
-    accept un-encrypted (HTTP) and/or untrusted (HTTPS with certificates
-    from unknown CAs) communication.
-
-    By default, local registries (`127.0.0.0/8`) are configured as
-    insecure. All other registries are secure. Communicating with an
-    insecure registry is not possible if the daemon assumes that registry
-    is secure.
-
-    This configuration override this behavior, insecure communication with
-    registries whose resolved IP address is within the subnet described by
-    the CIDR syntax.
-
-    Registries can also be marked insecure by hostname. Those registries
-    are listed under `IndexConfigs` and have their `Secure` field set to
     `false`.
 
     > **Warning**: Using this option can be useful when running a local
-    > registry, but introduces security vulnerabilities. This option
-    > should therefore ONLY be used for testing purposes. For increased
-    > security, users should add their CA to their system's list of trusted
-    > CAs instead of enabling this option.
-
      *
-     * @param string[] $insecureRegistryCIDRs
-     *
-     * @return self
+     * @param string[]|null $insecureRegistryCIDRs
      */
     public function setInsecureRegistryCIDRs(?array $insecureRegistryCIDRs): self
     {
@@ -308,19 +135,17 @@ class RegistryServiceConfig
     }
 
     /**
-     * @return IndexInfo[]
+     * @return IndexInfo[]|null
      */
-    public function getIndexConfigs(): ?\ArrayObject
+    public function getIndexConfigs(): ?iterable
     {
         return $this->indexConfigs;
     }
 
     /**
-     * @param IndexInfo[] $indexConfigs
-     *
-     * @return self
+     * @param IndexInfo[]|null $indexConfigs
      */
-    public function setIndexConfigs(?\ArrayObject $indexConfigs): self
+    public function setIndexConfigs(?iterable $indexConfigs): self
     {
         $this->indexConfigs = $indexConfigs;
 
@@ -329,10 +154,8 @@ class RegistryServiceConfig
 
     /**
      * List of registry URLs that act as a mirror for the official.
-    (`docker.io`) registry.
-
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getMirrors(): ?array
     {
@@ -341,12 +164,8 @@ class RegistryServiceConfig
 
     /**
      * List of registry URLs that act as a mirror for the official.
-    (`docker.io`) registry.
-
      *
-     * @param string[] $mirrors
-     *
-     * @return self
+     * @param string[]|null $mirrors
      */
     public function setMirrors(?array $mirrors): self
     {

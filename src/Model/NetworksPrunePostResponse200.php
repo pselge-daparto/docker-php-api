@@ -15,14 +15,14 @@ class NetworksPrunePostResponse200
     /**
      * Networks that were deleted.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $networksDeleted;
 
     /**
      * Networks that were deleted.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getNetworksDeleted(): ?array
     {
@@ -32,9 +32,7 @@ class NetworksPrunePostResponse200
     /**
      * Networks that were deleted.
      *
-     * @param string[] $networksDeleted
-     *
-     * @return self
+     * @param string[]|null $networksDeleted
      */
     public function setNetworksDeleted(?array $networksDeleted): self
     {

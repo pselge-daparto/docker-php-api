@@ -10,18 +10,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class ContainerChanges extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class ContainerChanges extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     protected $id;
 
     /**
      * Returns which files in a container's filesystem have been added, deleted,.
-    or modified. The `Kind` of modification can be one of:
-
-    - `0`: Modified
-    - `1`: Added
-    - `2`: Deleted
-
      *
      * @param string $id ID or name of the container
      */
@@ -30,7 +24,7 @@ class ContainerChanges extends \Jane\OpenApiRuntime\Client\BaseEndpoint implemen
         $this->id = $id;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -42,7 +36,7 @@ class ContainerChanges extends \Jane\OpenApiRuntime\Client\BaseEndpoint implemen
         return str_replace(['{id}'], [$this->id], '/containers/{id}/changes');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -58,9 +52,9 @@ class ContainerChanges extends \Jane\OpenApiRuntime\Client\BaseEndpoint implemen
      * @throws \Docker\API\Exception\ContainerChangesNotFoundException
      * @throws \Docker\API\Exception\ContainerChangesInternalServerErrorException
      *
-     * @return null|\Docker\API\Model\ContainersIdChangesGetResponse200Item[]
+     * @return \Docker\API\Model\ContainersIdChangesGetResponse200Item[]|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\ContainersIdChangesGetResponse200Item[]', 'json');
@@ -71,5 +65,10 @@ class ContainerChanges extends \Jane\OpenApiRuntime\Client\BaseEndpoint implemen
         if (500 === $status) {
             throw new \Docker\API\Exception\ContainerChangesInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

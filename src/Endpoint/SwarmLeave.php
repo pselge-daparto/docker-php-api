@@ -10,12 +10,14 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class SwarmLeave extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class SwarmLeave extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     /**
      * @param array $queryParameters {
      *
-     *     @var bool $force Force leave swarm, even if this is the last manager or that it will break the cluster.
+     *     @var bool $force Force leave swarm, even if this is the last manager or that it will
+    break the cluster.
+
      * }
      */
     public function __construct(array $queryParameters = [])
@@ -23,7 +25,7 @@ class SwarmLeave extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -35,7 +37,7 @@ class SwarmLeave extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         return '/swarm/leave';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -61,8 +63,10 @@ class SwarmLeave extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
      *
      * @throws \Docker\API\Exception\SwarmLeaveInternalServerErrorException
      * @throws \Docker\API\Exception\SwarmLeaveServiceUnavailableException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return null;
@@ -73,5 +77,10 @@ class SwarmLeave extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         if (503 === $status) {
             throw new \Docker\API\Exception\SwarmLeaveServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

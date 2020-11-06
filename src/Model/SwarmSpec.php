@@ -15,56 +15,54 @@ class SwarmSpec
     /**
      * Name of the swarm.
      *
-     * @var string
+     * @var string|null
      */
     protected $name;
     /**
      * User-defined key/value metadata.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $labels;
     /**
      * Orchestration configuration.
      *
-     * @var SwarmSpecOrchestration
+     * @var SwarmSpecOrchestration|null
      */
     protected $orchestration;
     /**
      * Raft configuration.
      *
-     * @var SwarmSpecRaft
+     * @var SwarmSpecRaft|null
      */
     protected $raft;
     /**
      * Dispatcher configuration.
      *
-     * @var SwarmSpecDispatcher
+     * @var SwarmSpecDispatcher|null
      */
     protected $dispatcher;
     /**
      * CA configuration.
      *
-     * @var SwarmSpecCAConfig
+     * @var SwarmSpecCAConfig|null
      */
     protected $cAConfig;
     /**
      * Parameters related to encryption-at-rest.
      *
-     * @var SwarmSpecEncryptionConfig
+     * @var SwarmSpecEncryptionConfig|null
      */
     protected $encryptionConfig;
     /**
      * Defaults for creating tasks in this cluster.
      *
-     * @var SwarmSpecTaskDefaults
+     * @var SwarmSpecTaskDefaults|null
      */
     protected $taskDefaults;
 
     /**
      * Name of the swarm.
-     *
-     * @return string
      */
     public function getName(): ?string
     {
@@ -73,10 +71,6 @@ class SwarmSpec
 
     /**
      * Name of the swarm.
-     *
-     * @param string $name
-     *
-     * @return self
      */
     public function setName(?string $name): self
     {
@@ -88,9 +82,9 @@ class SwarmSpec
     /**
      * User-defined key/value metadata.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getLabels(): ?\ArrayObject
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
@@ -98,11 +92,9 @@ class SwarmSpec
     /**
      * User-defined key/value metadata.
      *
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
-    public function setLabels(?\ArrayObject $labels): self
+    public function setLabels(?iterable $labels): self
     {
         $this->labels = $labels;
 
@@ -111,8 +103,6 @@ class SwarmSpec
 
     /**
      * Orchestration configuration.
-     *
-     * @return SwarmSpecOrchestration
      */
     public function getOrchestration(): ?SwarmSpecOrchestration
     {
@@ -121,10 +111,6 @@ class SwarmSpec
 
     /**
      * Orchestration configuration.
-     *
-     * @param SwarmSpecOrchestration $orchestration
-     *
-     * @return self
      */
     public function setOrchestration(?SwarmSpecOrchestration $orchestration): self
     {
@@ -135,8 +121,6 @@ class SwarmSpec
 
     /**
      * Raft configuration.
-     *
-     * @return SwarmSpecRaft
      */
     public function getRaft(): ?SwarmSpecRaft
     {
@@ -145,10 +129,6 @@ class SwarmSpec
 
     /**
      * Raft configuration.
-     *
-     * @param SwarmSpecRaft $raft
-     *
-     * @return self
      */
     public function setRaft(?SwarmSpecRaft $raft): self
     {
@@ -159,8 +139,6 @@ class SwarmSpec
 
     /**
      * Dispatcher configuration.
-     *
-     * @return SwarmSpecDispatcher
      */
     public function getDispatcher(): ?SwarmSpecDispatcher
     {
@@ -169,10 +147,6 @@ class SwarmSpec
 
     /**
      * Dispatcher configuration.
-     *
-     * @param SwarmSpecDispatcher $dispatcher
-     *
-     * @return self
      */
     public function setDispatcher(?SwarmSpecDispatcher $dispatcher): self
     {
@@ -183,8 +157,6 @@ class SwarmSpec
 
     /**
      * CA configuration.
-     *
-     * @return SwarmSpecCAConfig
      */
     public function getCAConfig(): ?SwarmSpecCAConfig
     {
@@ -193,10 +165,6 @@ class SwarmSpec
 
     /**
      * CA configuration.
-     *
-     * @param SwarmSpecCAConfig $cAConfig
-     *
-     * @return self
      */
     public function setCAConfig(?SwarmSpecCAConfig $cAConfig): self
     {
@@ -207,8 +175,6 @@ class SwarmSpec
 
     /**
      * Parameters related to encryption-at-rest.
-     *
-     * @return SwarmSpecEncryptionConfig
      */
     public function getEncryptionConfig(): ?SwarmSpecEncryptionConfig
     {
@@ -217,10 +183,6 @@ class SwarmSpec
 
     /**
      * Parameters related to encryption-at-rest.
-     *
-     * @param SwarmSpecEncryptionConfig $encryptionConfig
-     *
-     * @return self
      */
     public function setEncryptionConfig(?SwarmSpecEncryptionConfig $encryptionConfig): self
     {
@@ -231,8 +193,6 @@ class SwarmSpec
 
     /**
      * Defaults for creating tasks in this cluster.
-     *
-     * @return SwarmSpecTaskDefaults
      */
     public function getTaskDefaults(): ?SwarmSpecTaskDefaults
     {
@@ -241,10 +201,6 @@ class SwarmSpec
 
     /**
      * Defaults for creating tasks in this cluster.
-     *
-     * @param SwarmSpecTaskDefaults $taskDefaults
-     *
-     * @return self
      */
     public function setTaskDefaults(?SwarmSpecTaskDefaults $taskDefaults): self
     {

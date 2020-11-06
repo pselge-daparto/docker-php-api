@@ -13,12 +13,12 @@ namespace Docker\API\Model;
 class ContainersIdUpdatePostResponse200
 {
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $warnings;
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
     public function getWarnings(): ?array
     {
@@ -26,9 +26,7 @@ class ContainersIdUpdatePostResponse200
     }
 
     /**
-     * @param string[] $warnings
-     *
-     * @return self
+     * @param string[]|null $warnings
      */
     public function setWarnings(?array $warnings): self
     {

@@ -10,17 +10,14 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class ConfigCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class ConfigCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
-    /**
-     * @param \Docker\API\Model\ConfigsCreatePostBody $body
-     */
     public function __construct(\Docker\API\Model\ConfigsCreatePostBody $body)
     {
         $this->body = $body;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -32,7 +29,7 @@ class ConfigCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         return '/configs/create';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return $this->getSerializedBody($serializer);
     }
@@ -49,9 +46,9 @@ class ConfigCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
      * @throws \Docker\API\Exception\ConfigCreateInternalServerErrorException
      * @throws \Docker\API\Exception\ConfigCreateServiceUnavailableException
      *
-     * @return null|\Docker\API\Model\IdResponse
+     * @return \Docker\API\Model\IdResponse|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (201 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\IdResponse', 'json');
@@ -65,5 +62,10 @@ class ConfigCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         if (503 === $status) {
             throw new \Docker\API\Exception\ConfigCreateServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

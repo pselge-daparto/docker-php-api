@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class ProgressDetailNormalizer implements DenormalizerInterface, NormalizerInter
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,20 +32,30 @@ class ProgressDetailNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ProgressDetail;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ProgressDetail';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\ProgressDetail();
-        if (property_exists($data, 'current') && $data->{'current'} !== null) {
-            $object->setCurrent($data->{'current'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'total') && $data->{'total'} !== null) {
-            $object->setTotal($data->{'total'});
+        if (\array_key_exists('current', $data) && $data['current'] !== null) {
+            $object->setCurrent($data['current']);
+        } elseif (\array_key_exists('current', $data) && $data['current'] === null) {
+            $object->setCurrent(null);
+        }
+        if (\array_key_exists('total', $data) && $data['total'] !== null) {
+            $object->setTotal($data['total']);
+        } elseif (\array_key_exists('total', $data) && $data['total'] === null) {
+            $object->setTotal(null);
         }
 
         return $object;
@@ -50,12 +63,12 @@ class ProgressDetailNormalizer implements DenormalizerInterface, NormalizerInter
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getCurrent()) {
-            $data->{'current'} = $object->getCurrent();
+            $data['current'] = $object->getCurrent();
         }
         if (null !== $object->getTotal()) {
-            $data->{'total'} = $object->getTotal();
+            $data['total'] = $object->getTotal();
         }
 
         return $data;

@@ -10,71 +10,87 @@ declare(strict_types=1);
 
 namespace Docker\API\Model;
 
-class VersionGetResponse200
+class SystemVersion
 {
     /**
-     * @var VersionGetResponse200Platform
+     * @var SystemVersionPlatform|null
      */
     protected $platform;
     /**
-     * @var VersionGetResponse200ComponentsItem[]
+     * Information about system components.
+     *
+     * @var SystemVersionComponentsItem[]|null
      */
     protected $components;
     /**
-     * @var string
+     * The version of the daemon.
+     *
+     * @var string|null
      */
     protected $version;
     /**
-     * @var string
+     * The default (and highest) API version that is supported by the daemon.
+     *
+     * @var string|null
      */
     protected $apiVersion;
     /**
-     * @var string
+     * The minimum API version that is supported by the daemon.
+     *
+     * @var string|null
      */
     protected $minAPIVersion;
     /**
-     * @var string
+     * The Git commit of the source code that was used to build the daemon.
+     *
+     * @var string|null
      */
     protected $gitCommit;
     /**
-     * @var string
+     * The version Go used to compile the daemon, and the version of the Go.
+     *
+     * @var string|null
      */
     protected $goVersion;
     /**
-     * @var string
+     * The operating system that the daemon is running on ("linux" or "windows").
+     *
+     * @var string|null
      */
     protected $os;
     /**
-     * @var string
+     * The architecture that the daemon is running on.
+     *
+     * @var string|null
      */
     protected $arch;
     /**
-     * @var string
+     * The kernel version (`uname -r`) that the daemon is running on.
+
+     *
+     * @var string|null
      */
     protected $kernelVersion;
     /**
-     * @var bool
+     * Indicates if the daemon is started with experimental features enabled.
+
+     *
+     * @var bool|null
      */
     protected $experimental;
     /**
-     * @var string
+     * The date and time that the daemon was compiled.
+     *
+     * @var string|null
      */
     protected $buildTime;
 
-    /**
-     * @return VersionGetResponse200Platform
-     */
-    public function getPlatform(): ?VersionGetResponse200Platform
+    public function getPlatform(): ?SystemVersionPlatform
     {
         return $this->platform;
     }
 
-    /**
-     * @param VersionGetResponse200Platform $platform
-     *
-     * @return self
-     */
-    public function setPlatform(?VersionGetResponse200Platform $platform): self
+    public function setPlatform(?SystemVersionPlatform $platform): self
     {
         $this->platform = $platform;
 
@@ -82,7 +98,9 @@ class VersionGetResponse200
     }
 
     /**
-     * @return VersionGetResponse200ComponentsItem[]
+     * Information about system components.
+     *
+     * @return SystemVersionComponentsItem[]|null
      */
     public function getComponents(): ?array
     {
@@ -90,9 +108,9 @@ class VersionGetResponse200
     }
 
     /**
-     * @param VersionGetResponse200ComponentsItem[] $components
+     * Information about system components.
      *
-     * @return self
+     * @param SystemVersionComponentsItem[]|null $components
      */
     public function setComponents(?array $components): self
     {
@@ -102,7 +120,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The version of the daemon.
      */
     public function getVersion(): ?string
     {
@@ -110,9 +128,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $version
-     *
-     * @return self
+     * The version of the daemon.
      */
     public function setVersion(?string $version): self
     {
@@ -122,7 +138,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The default (and highest) API version that is supported by the daemon.
      */
     public function getApiVersion(): ?string
     {
@@ -130,9 +146,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $apiVersion
-     *
-     * @return self
+     * The default (and highest) API version that is supported by the daemon.
      */
     public function setApiVersion(?string $apiVersion): self
     {
@@ -142,7 +156,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The minimum API version that is supported by the daemon.
      */
     public function getMinAPIVersion(): ?string
     {
@@ -150,9 +164,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $minAPIVersion
-     *
-     * @return self
+     * The minimum API version that is supported by the daemon.
      */
     public function setMinAPIVersion(?string $minAPIVersion): self
     {
@@ -162,7 +174,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The Git commit of the source code that was used to build the daemon.
      */
     public function getGitCommit(): ?string
     {
@@ -170,9 +182,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $gitCommit
-     *
-     * @return self
+     * The Git commit of the source code that was used to build the daemon.
      */
     public function setGitCommit(?string $gitCommit): self
     {
@@ -182,7 +192,8 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The version Go used to compile the daemon, and the version of the Go.
+    runtime in use.
      */
     public function getGoVersion(): ?string
     {
@@ -190,9 +201,8 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $goVersion
-     *
-     * @return self
+     * The version Go used to compile the daemon, and the version of the Go.
+    runtime in use.
      */
     public function setGoVersion(?string $goVersion): self
     {
@@ -202,7 +212,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The operating system that the daemon is running on ("linux" or "windows").
      */
     public function getOs(): ?string
     {
@@ -210,9 +220,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $os
-     *
-     * @return self
+     * The operating system that the daemon is running on ("linux" or "windows").
      */
     public function setOs(?string $os): self
     {
@@ -222,7 +230,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The architecture that the daemon is running on.
      */
     public function getArch(): ?string
     {
@@ -230,9 +238,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $arch
-     *
-     * @return self
+     * The architecture that the daemon is running on.
      */
     public function setArch(?string $arch): self
     {
@@ -242,7 +248,9 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The kernel version (`uname -r`) that the daemon is running on.
+
+    This field is omitted when empty.
      */
     public function getKernelVersion(): ?string
     {
@@ -250,9 +258,9 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $kernelVersion
-     *
-     * @return self
+     * The kernel version (`uname -r`) that the daemon is running on.
+
+    This field is omitted when empty.
      */
     public function setKernelVersion(?string $kernelVersion): self
     {
@@ -262,7 +270,9 @@ class VersionGetResponse200
     }
 
     /**
-     * @return bool
+     * Indicates if the daemon is started with experimental features enabled.
+
+    This field is omitted when empty / false.
      */
     public function getExperimental(): ?bool
     {
@@ -270,9 +280,9 @@ class VersionGetResponse200
     }
 
     /**
-     * @param bool $experimental
-     *
-     * @return self
+     * Indicates if the daemon is started with experimental features enabled.
+
+    This field is omitted when empty / false.
      */
     public function setExperimental(?bool $experimental): self
     {
@@ -282,7 +292,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @return string
+     * The date and time that the daemon was compiled.
      */
     public function getBuildTime(): ?string
     {
@@ -290,9 +300,7 @@ class VersionGetResponse200
     }
 
     /**
-     * @param string $buildTime
-     *
-     * @return self
+     * The date and time that the daemon was compiled.
      */
     public function setBuildTime(?string $buildTime): self
     {

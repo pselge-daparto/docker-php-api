@@ -15,20 +15,20 @@ class ImagesPrunePostResponse200
     /**
      * Images that were deleted.
      *
-     * @var ImageDeleteResponseItem[]
+     * @var ImageDeleteResponseItem[]|null
      */
     protected $imagesDeleted;
     /**
      * Disk space reclaimed in bytes.
      *
-     * @var int
+     * @var int|null
      */
     protected $spaceReclaimed;
 
     /**
      * Images that were deleted.
      *
-     * @return ImageDeleteResponseItem[]
+     * @return ImageDeleteResponseItem[]|null
      */
     public function getImagesDeleted(): ?array
     {
@@ -38,9 +38,7 @@ class ImagesPrunePostResponse200
     /**
      * Images that were deleted.
      *
-     * @param ImageDeleteResponseItem[] $imagesDeleted
-     *
-     * @return self
+     * @param ImageDeleteResponseItem[]|null $imagesDeleted
      */
     public function setImagesDeleted(?array $imagesDeleted): self
     {
@@ -51,8 +49,6 @@ class ImagesPrunePostResponse200
 
     /**
      * Disk space reclaimed in bytes.
-     *
-     * @return int
      */
     public function getSpaceReclaimed(): ?int
     {
@@ -61,10 +57,6 @@ class ImagesPrunePostResponse200
 
     /**
      * Disk space reclaimed in bytes.
-     *
-     * @param int $spaceReclaimed
-     *
-     * @return self
      */
     public function setSpaceReclaimed(?int $spaceReclaimed): self
     {

@@ -15,164 +15,158 @@ class ContainerConfig
     /**
      * The hostname to use for the container, as a valid RFC 1123 hostname.
      *
-     * @var string
+     * @var string|null
      */
     protected $hostname;
     /**
      * The domain name to use for the container.
      *
-     * @var string
+     * @var string|null
      */
     protected $domainname;
     /**
      * The user that commands are run as inside the container.
      *
-     * @var string
+     * @var string|null
      */
     protected $user;
     /**
      * Whether to attach to `stdin`.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $attachStdin;
+    protected $attachStdin = false;
     /**
      * Whether to attach to `stdout`.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $attachStdout;
+    protected $attachStdout = true;
     /**
      * Whether to attach to `stderr`.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $attachStderr;
+    protected $attachStderr = true;
     /**
      * An object mapping ports to an empty object in the form:.
 
-    `{"<port>/<tcp|udp>": {}}`
-
      *
-     * @var mixed[]
+     * @var mixed[]|null
      */
     protected $exposedPorts;
     /**
      * Attach standard streams to a TTY, including `stdin` if it is not closed.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $tty;
+    protected $tty = false;
     /**
      * Open `stdin`.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $openStdin;
+    protected $openStdin = false;
     /**
      * Close `stdin` after one attached client disconnects.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $stdinOnce;
+    protected $stdinOnce = false;
     /**
-     * A list of environment variables to set inside the container in the form `["VAR=value", ...]`. A variable without `=` is removed from the environment, rather than to have an empty value.
+     * A list of environment variables to set inside the container in the.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $env;
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $cmd;
     /**
      * A test to perform to check that the container is healthy.
      *
-     * @var HealthConfig
+     * @var HealthConfig|null
      */
     protected $healthcheck;
     /**
      * Command is already escaped (Windows only).
      *
-     * @var bool
+     * @var bool|null
      */
     protected $argsEscaped;
     /**
-     * The name of the image to use when creating the container.
+     * The name of the image to use when creating the container/.
      *
-     * @var string
+     * @var string|null
      */
     protected $image;
     /**
-     * An object mapping mount point paths inside the container to empty objects.
+     * An object mapping mount point paths inside the container to empty.
      *
-     * @var mixed[]
+     * @var mixed[]|null
      */
     protected $volumes;
     /**
      * The working directory for commands to run in.
      *
-     * @var string
+     * @var string|null
      */
     protected $workingDir;
     /**
      * The entry point for the container as a string or an array of strings.
 
-    If the array consists of exactly one empty string (`[""]`) then the entry point is reset to system default (i.e., the entry point used by docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
-
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $entrypoint;
     /**
      * Disable networking for the container.
      *
-     * @var bool
+     * @var bool|null
      */
     protected $networkDisabled;
     /**
      * MAC address of the container.
      *
-     * @var string
+     * @var string|null
      */
     protected $macAddress;
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $onBuild;
     /**
      * User-defined key/value metadata.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $labels;
     /**
      * Signal to stop a container as a string or unsigned integer.
      *
-     * @var string
+     * @var string|null
      */
-    protected $stopSignal;
+    protected $stopSignal = 'SIGTERM';
     /**
      * Timeout to stop a container in seconds.
      *
-     * @var int
+     * @var int|null
      */
-    protected $stopTimeout;
+    protected $stopTimeout = 10;
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $shell;
 
     /**
      * The hostname to use for the container, as a valid RFC 1123 hostname.
-     *
-     * @return string
      */
     public function getHostname(): ?string
     {
@@ -181,10 +175,6 @@ class ContainerConfig
 
     /**
      * The hostname to use for the container, as a valid RFC 1123 hostname.
-     *
-     * @param string $hostname
-     *
-     * @return self
      */
     public function setHostname(?string $hostname): self
     {
@@ -195,8 +185,6 @@ class ContainerConfig
 
     /**
      * The domain name to use for the container.
-     *
-     * @return string
      */
     public function getDomainname(): ?string
     {
@@ -205,10 +193,6 @@ class ContainerConfig
 
     /**
      * The domain name to use for the container.
-     *
-     * @param string $domainname
-     *
-     * @return self
      */
     public function setDomainname(?string $domainname): self
     {
@@ -219,8 +203,6 @@ class ContainerConfig
 
     /**
      * The user that commands are run as inside the container.
-     *
-     * @return string
      */
     public function getUser(): ?string
     {
@@ -229,10 +211,6 @@ class ContainerConfig
 
     /**
      * The user that commands are run as inside the container.
-     *
-     * @param string $user
-     *
-     * @return self
      */
     public function setUser(?string $user): self
     {
@@ -243,8 +221,6 @@ class ContainerConfig
 
     /**
      * Whether to attach to `stdin`.
-     *
-     * @return bool
      */
     public function getAttachStdin(): ?bool
     {
@@ -253,10 +229,6 @@ class ContainerConfig
 
     /**
      * Whether to attach to `stdin`.
-     *
-     * @param bool $attachStdin
-     *
-     * @return self
      */
     public function setAttachStdin(?bool $attachStdin): self
     {
@@ -267,8 +239,6 @@ class ContainerConfig
 
     /**
      * Whether to attach to `stdout`.
-     *
-     * @return bool
      */
     public function getAttachStdout(): ?bool
     {
@@ -277,10 +247,6 @@ class ContainerConfig
 
     /**
      * Whether to attach to `stdout`.
-     *
-     * @param bool $attachStdout
-     *
-     * @return self
      */
     public function setAttachStdout(?bool $attachStdout): self
     {
@@ -291,8 +257,6 @@ class ContainerConfig
 
     /**
      * Whether to attach to `stderr`.
-     *
-     * @return bool
      */
     public function getAttachStderr(): ?bool
     {
@@ -301,10 +265,6 @@ class ContainerConfig
 
     /**
      * Whether to attach to `stderr`.
-     *
-     * @param bool $attachStderr
-     *
-     * @return self
      */
     public function setAttachStderr(?bool $attachStderr): self
     {
@@ -316,12 +276,10 @@ class ContainerConfig
     /**
      * An object mapping ports to an empty object in the form:.
 
-    `{"<port>/<tcp|udp>": {}}`
-
      *
-     * @return mixed[]
+     * @return mixed[]|null
      */
-    public function getExposedPorts(): ?\ArrayObject
+    public function getExposedPorts(): ?iterable
     {
         return $this->exposedPorts;
     }
@@ -329,14 +287,10 @@ class ContainerConfig
     /**
      * An object mapping ports to an empty object in the form:.
 
-    `{"<port>/<tcp|udp>": {}}`
-
      *
-     * @param mixed[] $exposedPorts
-     *
-     * @return self
+     * @param mixed[]|null $exposedPorts
      */
-    public function setExposedPorts(?\ArrayObject $exposedPorts): self
+    public function setExposedPorts(?iterable $exposedPorts): self
     {
         $this->exposedPorts = $exposedPorts;
 
@@ -345,8 +299,6 @@ class ContainerConfig
 
     /**
      * Attach standard streams to a TTY, including `stdin` if it is not closed.
-     *
-     * @return bool
      */
     public function getTty(): ?bool
     {
@@ -355,10 +307,6 @@ class ContainerConfig
 
     /**
      * Attach standard streams to a TTY, including `stdin` if it is not closed.
-     *
-     * @param bool $tty
-     *
-     * @return self
      */
     public function setTty(?bool $tty): self
     {
@@ -369,8 +317,6 @@ class ContainerConfig
 
     /**
      * Open `stdin`.
-     *
-     * @return bool
      */
     public function getOpenStdin(): ?bool
     {
@@ -379,10 +325,6 @@ class ContainerConfig
 
     /**
      * Open `stdin`.
-     *
-     * @param bool $openStdin
-     *
-     * @return self
      */
     public function setOpenStdin(?bool $openStdin): self
     {
@@ -393,8 +335,6 @@ class ContainerConfig
 
     /**
      * Close `stdin` after one attached client disconnects.
-     *
-     * @return bool
      */
     public function getStdinOnce(): ?bool
     {
@@ -403,10 +343,6 @@ class ContainerConfig
 
     /**
      * Close `stdin` after one attached client disconnects.
-     *
-     * @param bool $stdinOnce
-     *
-     * @return self
      */
     public function setStdinOnce(?bool $stdinOnce): self
     {
@@ -416,9 +352,9 @@ class ContainerConfig
     }
 
     /**
-     * A list of environment variables to set inside the container in the form `["VAR=value", ...]`. A variable without `=` is removed from the environment, rather than to have an empty value.
+     * A list of environment variables to set inside the container in the.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getEnv(): ?array
     {
@@ -426,11 +362,9 @@ class ContainerConfig
     }
 
     /**
-     * A list of environment variables to set inside the container in the form `["VAR=value", ...]`. A variable without `=` is removed from the environment, rather than to have an empty value.
+     * A list of environment variables to set inside the container in the.
      *
-     * @param string[] $env
-     *
-     * @return self
+     * @param string[]|null $env
      */
     public function setEnv(?array $env): self
     {
@@ -442,7 +376,7 @@ class ContainerConfig
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getCmd(): ?array
     {
@@ -452,9 +386,7 @@ class ContainerConfig
     /**
      * Command to run specified as a string or an array of strings.
      *
-     * @param string[] $cmd
-     *
-     * @return self
+     * @param string[]|null $cmd
      */
     public function setCmd(?array $cmd): self
     {
@@ -465,8 +397,6 @@ class ContainerConfig
 
     /**
      * A test to perform to check that the container is healthy.
-     *
-     * @return HealthConfig
      */
     public function getHealthcheck(): ?HealthConfig
     {
@@ -475,10 +405,6 @@ class ContainerConfig
 
     /**
      * A test to perform to check that the container is healthy.
-     *
-     * @param HealthConfig $healthcheck
-     *
-     * @return self
      */
     public function setHealthcheck(?HealthConfig $healthcheck): self
     {
@@ -489,8 +415,6 @@ class ContainerConfig
 
     /**
      * Command is already escaped (Windows only).
-     *
-     * @return bool
      */
     public function getArgsEscaped(): ?bool
     {
@@ -499,10 +423,6 @@ class ContainerConfig
 
     /**
      * Command is already escaped (Windows only).
-     *
-     * @param bool $argsEscaped
-     *
-     * @return self
      */
     public function setArgsEscaped(?bool $argsEscaped): self
     {
@@ -512,9 +432,7 @@ class ContainerConfig
     }
 
     /**
-     * The name of the image to use when creating the container.
-     *
-     * @return string
+     * The name of the image to use when creating the container/.
      */
     public function getImage(): ?string
     {
@@ -522,11 +440,7 @@ class ContainerConfig
     }
 
     /**
-     * The name of the image to use when creating the container.
-     *
-     * @param string $image
-     *
-     * @return self
+     * The name of the image to use when creating the container/.
      */
     public function setImage(?string $image): self
     {
@@ -536,23 +450,21 @@ class ContainerConfig
     }
 
     /**
-     * An object mapping mount point paths inside the container to empty objects.
+     * An object mapping mount point paths inside the container to empty.
      *
-     * @return mixed[]
+     * @return mixed[]|null
      */
-    public function getVolumes(): ?\ArrayObject
+    public function getVolumes(): ?iterable
     {
         return $this->volumes;
     }
 
     /**
-     * An object mapping mount point paths inside the container to empty objects.
+     * An object mapping mount point paths inside the container to empty.
      *
-     * @param mixed[] $volumes
-     *
-     * @return self
+     * @param mixed[]|null $volumes
      */
-    public function setVolumes(?\ArrayObject $volumes): self
+    public function setVolumes(?iterable $volumes): self
     {
         $this->volumes = $volumes;
 
@@ -561,8 +473,6 @@ class ContainerConfig
 
     /**
      * The working directory for commands to run in.
-     *
-     * @return string
      */
     public function getWorkingDir(): ?string
     {
@@ -571,10 +481,6 @@ class ContainerConfig
 
     /**
      * The working directory for commands to run in.
-     *
-     * @param string $workingDir
-     *
-     * @return self
      */
     public function setWorkingDir(?string $workingDir): self
     {
@@ -586,10 +492,8 @@ class ContainerConfig
     /**
      * The entry point for the container as a string or an array of strings.
 
-    If the array consists of exactly one empty string (`[""]`) then the entry point is reset to system default (i.e., the entry point used by docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
-
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getEntrypoint(): ?array
     {
@@ -599,12 +503,8 @@ class ContainerConfig
     /**
      * The entry point for the container as a string or an array of strings.
 
-    If the array consists of exactly one empty string (`[""]`) then the entry point is reset to system default (i.e., the entry point used by docker when there is no `ENTRYPOINT` instruction in the `Dockerfile`).
-
      *
-     * @param string[] $entrypoint
-     *
-     * @return self
+     * @param string[]|null $entrypoint
      */
     public function setEntrypoint(?array $entrypoint): self
     {
@@ -615,8 +515,6 @@ class ContainerConfig
 
     /**
      * Disable networking for the container.
-     *
-     * @return bool
      */
     public function getNetworkDisabled(): ?bool
     {
@@ -625,10 +523,6 @@ class ContainerConfig
 
     /**
      * Disable networking for the container.
-     *
-     * @param bool $networkDisabled
-     *
-     * @return self
      */
     public function setNetworkDisabled(?bool $networkDisabled): self
     {
@@ -639,8 +533,6 @@ class ContainerConfig
 
     /**
      * MAC address of the container.
-     *
-     * @return string
      */
     public function getMacAddress(): ?string
     {
@@ -649,10 +541,6 @@ class ContainerConfig
 
     /**
      * MAC address of the container.
-     *
-     * @param string $macAddress
-     *
-     * @return self
      */
     public function setMacAddress(?string $macAddress): self
     {
@@ -664,7 +552,7 @@ class ContainerConfig
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getOnBuild(): ?array
     {
@@ -674,9 +562,7 @@ class ContainerConfig
     /**
      * `ONBUILD` metadata that were defined in the image's `Dockerfile`.
      *
-     * @param string[] $onBuild
-     *
-     * @return self
+     * @param string[]|null $onBuild
      */
     public function setOnBuild(?array $onBuild): self
     {
@@ -688,9 +574,9 @@ class ContainerConfig
     /**
      * User-defined key/value metadata.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getLabels(): ?\ArrayObject
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
@@ -698,11 +584,9 @@ class ContainerConfig
     /**
      * User-defined key/value metadata.
      *
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
-    public function setLabels(?\ArrayObject $labels): self
+    public function setLabels(?iterable $labels): self
     {
         $this->labels = $labels;
 
@@ -711,8 +595,6 @@ class ContainerConfig
 
     /**
      * Signal to stop a container as a string or unsigned integer.
-     *
-     * @return string
      */
     public function getStopSignal(): ?string
     {
@@ -721,10 +603,6 @@ class ContainerConfig
 
     /**
      * Signal to stop a container as a string or unsigned integer.
-     *
-     * @param string $stopSignal
-     *
-     * @return self
      */
     public function setStopSignal(?string $stopSignal): self
     {
@@ -735,8 +613,6 @@ class ContainerConfig
 
     /**
      * Timeout to stop a container in seconds.
-     *
-     * @return int
      */
     public function getStopTimeout(): ?int
     {
@@ -745,10 +621,6 @@ class ContainerConfig
 
     /**
      * Timeout to stop a container in seconds.
-     *
-     * @param int $stopTimeout
-     *
-     * @return self
      */
     public function setStopTimeout(?int $stopTimeout): self
     {
@@ -760,7 +632,7 @@ class ContainerConfig
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @return string[]
+     * @return string[]|null
      */
     public function getShell(): ?array
     {
@@ -770,9 +642,7 @@ class ContainerConfig
     /**
      * Shell for when `RUN`, `CMD`, and `ENTRYPOINT` uses a shell.
      *
-     * @param string[] $shell
-     *
-     * @return self
+     * @param string[]|null $shell
      */
     public function setShell(?array $shell): self
     {

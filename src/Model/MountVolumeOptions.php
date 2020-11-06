@@ -15,26 +15,24 @@ class MountVolumeOptions
     /**
      * Populate volume with data from the target.
      *
-     * @var bool
+     * @var bool|null
      */
-    protected $noCopy;
+    protected $noCopy = false;
     /**
      * User-defined key/value metadata.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $labels;
     /**
      * Map of driver specific options.
      *
-     * @var MountVolumeOptionsDriverConfig
+     * @var MountVolumeOptionsDriverConfig|null
      */
     protected $driverConfig;
 
     /**
      * Populate volume with data from the target.
-     *
-     * @return bool
      */
     public function getNoCopy(): ?bool
     {
@@ -43,10 +41,6 @@ class MountVolumeOptions
 
     /**
      * Populate volume with data from the target.
-     *
-     * @param bool $noCopy
-     *
-     * @return self
      */
     public function setNoCopy(?bool $noCopy): self
     {
@@ -58,9 +52,9 @@ class MountVolumeOptions
     /**
      * User-defined key/value metadata.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getLabels(): ?\ArrayObject
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
@@ -68,11 +62,9 @@ class MountVolumeOptions
     /**
      * User-defined key/value metadata.
      *
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
-    public function setLabels(?\ArrayObject $labels): self
+    public function setLabels(?iterable $labels): self
     {
         $this->labels = $labels;
 
@@ -81,8 +73,6 @@ class MountVolumeOptions
 
     /**
      * Map of driver specific options.
-     *
-     * @return MountVolumeOptionsDriverConfig
      */
     public function getDriverConfig(): ?MountVolumeOptionsDriverConfig
     {
@@ -91,10 +81,6 @@ class MountVolumeOptions
 
     /**
      * Map of driver specific options.
-     *
-     * @param MountVolumeOptionsDriverConfig $driverConfig
-     *
-     * @return self
      */
     public function setDriverConfig(?MountVolumeOptionsDriverConfig $driverConfig): self
     {

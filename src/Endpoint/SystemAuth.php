@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class SystemAuth extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class SystemAuth extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     /**
-     * Validate credentials for a registry and, if available, get an identity token for accessing the registry without password.
+     * Validate credentials for a registry and, if available, get an identity.
      *
      * @param \Docker\API\Model\AuthConfig $authConfig Authentication to check
      */
@@ -22,7 +22,7 @@ class SystemAuth extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         $this->body = $authConfig;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -34,7 +34,7 @@ class SystemAuth extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         return '/auth';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return $this->getSerializedBody($serializer);
     }
@@ -49,9 +49,9 @@ class SystemAuth extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
      *
      * @throws \Docker\API\Exception\SystemAuthInternalServerErrorException
      *
-     * @return null|\Docker\API\Model\AuthPostResponse200
+     * @return \Docker\API\Model\AuthPostResponse200|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\AuthPostResponse200', 'json');
@@ -62,5 +62,10 @@ class SystemAuth extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Ja
         if (500 === $status) {
             throw new \Docker\API\Exception\SystemAuthInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

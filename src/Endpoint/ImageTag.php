@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class ImageTag extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class ImageTag extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     protected $name;
 
@@ -30,7 +30,7 @@ class ImageTag extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -42,7 +42,7 @@ class ImageTag extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane
         return str_replace(['{name}'], [$this->name], '/images/{name}/tag');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -71,8 +71,10 @@ class ImageTag extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane
      * @throws \Docker\API\Exception\ImageTagNotFoundException
      * @throws \Docker\API\Exception\ImageTagConflictException
      * @throws \Docker\API\Exception\ImageTagInternalServerErrorException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (201 === $status) {
             return null;
@@ -89,5 +91,10 @@ class ImageTag extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane
         if (500 === $status) {
             throw new \Docker\API\Exception\ImageTagInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

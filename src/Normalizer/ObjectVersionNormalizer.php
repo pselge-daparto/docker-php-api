@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class ObjectVersionNormalizer implements DenormalizerInterface, NormalizerInterf
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,17 +32,25 @@ class ObjectVersionNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ObjectVersion;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ObjectVersion';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\ObjectVersion();
-        if (property_exists($data, 'Index') && $data->{'Index'} !== null) {
-            $object->setIndex($data->{'Index'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('Index', $data) && $data['Index'] !== null) {
+            $object->setIndex($data['Index']);
+        } elseif (\array_key_exists('Index', $data) && $data['Index'] === null) {
+            $object->setIndex(null);
         }
 
         return $object;
@@ -47,9 +58,9 @@ class ObjectVersionNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getIndex()) {
-            $data->{'Index'} = $object->getIndex();
+            $data['Index'] = $object->getIndex();
         }
 
         return $data;

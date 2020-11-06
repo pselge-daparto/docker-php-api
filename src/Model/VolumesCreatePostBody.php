@@ -15,32 +15,30 @@ class VolumesCreatePostBody
     /**
      * The new volume's name. If not specified, Docker generates a name.
      *
-     * @var string
+     * @var string|null
      */
     protected $name;
     /**
      * Name of the volume driver to use.
      *
-     * @var string
+     * @var string|null
      */
-    protected $driver;
+    protected $driver = 'local';
     /**
-     * A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
+     * A mapping of driver options and values. These options are.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $driverOpts;
     /**
      * User-defined key/value metadata.
      *
-     * @var string[]
+     * @var string[]|null
      */
     protected $labels;
 
     /**
      * The new volume's name. If not specified, Docker generates a name.
-     *
-     * @return string
      */
     public function getName(): ?string
     {
@@ -49,10 +47,6 @@ class VolumesCreatePostBody
 
     /**
      * The new volume's name. If not specified, Docker generates a name.
-     *
-     * @param string $name
-     *
-     * @return self
      */
     public function setName(?string $name): self
     {
@@ -63,8 +57,6 @@ class VolumesCreatePostBody
 
     /**
      * Name of the volume driver to use.
-     *
-     * @return string
      */
     public function getDriver(): ?string
     {
@@ -73,10 +65,6 @@ class VolumesCreatePostBody
 
     /**
      * Name of the volume driver to use.
-     *
-     * @param string $driver
-     *
-     * @return self
      */
     public function setDriver(?string $driver): self
     {
@@ -86,23 +74,21 @@ class VolumesCreatePostBody
     }
 
     /**
-     * A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
+     * A mapping of driver options and values. These options are.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getDriverOpts(): ?\ArrayObject
+    public function getDriverOpts(): ?iterable
     {
         return $this->driverOpts;
     }
 
     /**
-     * A mapping of driver options and values. These options are passed directly to the driver and are driver specific.
+     * A mapping of driver options and values. These options are.
      *
-     * @param string[] $driverOpts
-     *
-     * @return self
+     * @param string[]|null $driverOpts
      */
-    public function setDriverOpts(?\ArrayObject $driverOpts): self
+    public function setDriverOpts(?iterable $driverOpts): self
     {
         $this->driverOpts = $driverOpts;
 
@@ -112,9 +98,9 @@ class VolumesCreatePostBody
     /**
      * User-defined key/value metadata.
      *
-     * @return string[]
+     * @return string[]|null
      */
-    public function getLabels(): ?\ArrayObject
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
@@ -122,11 +108,9 @@ class VolumesCreatePostBody
     /**
      * User-defined key/value metadata.
      *
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
-    public function setLabels(?\ArrayObject $labels): self
+    public function setLabels(?iterable $labels): self
     {
         $this->labels = $labels;
 

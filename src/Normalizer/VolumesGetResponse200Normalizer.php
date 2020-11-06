@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class VolumesGetResponse200Normalizer implements DenormalizerInterface, Normaliz
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,28 +32,38 @@ class VolumesGetResponse200Normalizer implements DenormalizerInterface, Normaliz
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\VolumesGetResponse200;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\VolumesGetResponse200';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\VolumesGetResponse200();
-        if (property_exists($data, 'Volumes') && $data->{'Volumes'} !== null) {
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('Volumes', $data) && $data['Volumes'] !== null) {
             $values = [];
-            foreach ($data->{'Volumes'} as $value) {
+            foreach ($data['Volumes'] as $value) {
                 $values[] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\Volume', 'json', $context);
             }
             $object->setVolumes($values);
+        } elseif (\array_key_exists('Volumes', $data) && $data['Volumes'] === null) {
+            $object->setVolumes(null);
         }
-        if (property_exists($data, 'Warnings') && $data->{'Warnings'} !== null) {
+        if (\array_key_exists('Warnings', $data) && $data['Warnings'] !== null) {
             $values_1 = [];
-            foreach ($data->{'Warnings'} as $value_1) {
+            foreach ($data['Warnings'] as $value_1) {
                 $values_1[] = $value_1;
             }
             $object->setWarnings($values_1);
+        } elseif (\array_key_exists('Warnings', $data) && $data['Warnings'] === null) {
+            $object->setWarnings(null);
         }
 
         return $object;
@@ -58,21 +71,17 @@ class VolumesGetResponse200Normalizer implements DenormalizerInterface, Normaliz
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
-        if (null !== $object->getVolumes()) {
-            $values = [];
-            foreach ($object->getVolumes() as $value) {
-                $values[] = $this->normalizer->normalize($value, 'json', $context);
-            }
-            $data->{'Volumes'} = $values;
+        $data = [];
+        $values = [];
+        foreach ($object->getVolumes() as $value) {
+            $values[] = $this->normalizer->normalize($value, 'json', $context);
         }
-        if (null !== $object->getWarnings()) {
-            $values_1 = [];
-            foreach ($object->getWarnings() as $value_1) {
-                $values_1[] = $value_1;
-            }
-            $data->{'Warnings'} = $values_1;
+        $data['Volumes'] = $values;
+        $values_1 = [];
+        foreach ($object->getWarnings() as $value_1) {
+            $values_1[] = $value_1;
         }
+        $data['Warnings'] = $values_1;
 
         return $data;
     }

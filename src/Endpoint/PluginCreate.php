@@ -10,13 +10,15 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class PluginCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class PluginCreate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     /**
      * @param string|resource|\Psr\Http\Message\StreamInterface $tarContext      Path to tar containing plugin rootfs and manifest
      * @param array                                             $queryParameters {
      *
-     *     @var string $name The name of the plugin. The `:latest` tag is optional, and is the default if omitted.
+     *     @var string $name The name of the plugin. The `:latest` tag is optional, and is the
+    default if omitted.
+
      * }
      */
     public function __construct($tarContext, array $queryParameters = [])
@@ -25,7 +27,7 @@ class PluginCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -37,7 +39,7 @@ class PluginCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         return '/plugins/create';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], $this->body];
     }
@@ -62,8 +64,10 @@ class PluginCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
      * {@inheritdoc}
      *
      * @throws \Docker\API\Exception\PluginCreateInternalServerErrorException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (204 === $status) {
             return null;
@@ -71,5 +75,10 @@ class PluginCreate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         if (500 === $status) {
             throw new \Docker\API\Exception\PluginCreateInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

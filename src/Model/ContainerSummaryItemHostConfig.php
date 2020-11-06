@@ -13,23 +13,15 @@ namespace Docker\API\Model;
 class ContainerSummaryItemHostConfig
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $networkMode;
 
-    /**
-     * @return string
-     */
     public function getNetworkMode(): ?string
     {
         return $this->networkMode;
     }
 
-    /**
-     * @param string $networkMode
-     *
-     * @return self
-     */
     public function setNetworkMode(?string $networkMode): self
     {
         $this->networkMode = $networkMode;

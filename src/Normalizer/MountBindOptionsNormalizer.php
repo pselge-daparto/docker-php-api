@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class MountBindOptionsNormalizer implements DenormalizerInterface, NormalizerInt
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,17 +32,30 @@ class MountBindOptionsNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\MountBindOptions;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\MountBindOptions';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\MountBindOptions();
-        if (property_exists($data, 'Propagation') && $data->{'Propagation'} !== null) {
-            $object->setPropagation($data->{'Propagation'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('Propagation', $data) && $data['Propagation'] !== null) {
+            $object->setPropagation($data['Propagation']);
+        } elseif (\array_key_exists('Propagation', $data) && $data['Propagation'] === null) {
+            $object->setPropagation(null);
+        }
+        if (\array_key_exists('NonRecursive', $data) && $data['NonRecursive'] !== null) {
+            $object->setNonRecursive($data['NonRecursive']);
+        } elseif (\array_key_exists('NonRecursive', $data) && $data['NonRecursive'] === null) {
+            $object->setNonRecursive(null);
         }
 
         return $object;
@@ -47,9 +63,12 @@ class MountBindOptionsNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getPropagation()) {
-            $data->{'Propagation'} = $object->getPropagation();
+            $data['Propagation'] = $object->getPropagation();
+        }
+        if (null !== $object->getNonRecursive()) {
+            $data['NonRecursive'] = $object->getNonRecursive();
         }
 
         return $data;

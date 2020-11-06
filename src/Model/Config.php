@@ -13,48 +13,33 @@ namespace Docker\API\Model;
 class Config
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $iD;
     /**
-     * The version number of the object such as node, service, etc. This is needed to avoid conflicting writes.
-    The client must send the version number along with the modified specification when updating these objects.
-    This approach ensures safe concurrency and determinism in that the change on the object
-    may not be applied if the version number has changed from the last read. In other words,
-    if two update requests specify the same base version, only one of the requests can succeed.
-    As a result, two separate update requests that happen at the same time will not
-    unintentionally overwrite each other.
-
+     * The version number of the object such as node, service, etc. This is needed.
      *
-     * @var ObjectVersion
+     * @var ObjectVersion|null
      */
     protected $version;
     /**
-     * @var string
+     * @var string|null
      */
     protected $createdAt;
     /**
-     * @var string
+     * @var string|null
      */
     protected $updatedAt;
     /**
-     * @var ConfigSpec
+     * @var ConfigSpec|null
      */
     protected $spec;
 
-    /**
-     * @return string
-     */
     public function getID(): ?string
     {
         return $this->iD;
     }
 
-    /**
-     * @param string $iD
-     *
-     * @return self
-     */
     public function setID(?string $iD): self
     {
         $this->iD = $iD;
@@ -63,16 +48,8 @@ class Config
     }
 
     /**
-     * The version number of the object such as node, service, etc. This is needed to avoid conflicting writes.
-    The client must send the version number along with the modified specification when updating these objects.
-    This approach ensures safe concurrency and determinism in that the change on the object
-    may not be applied if the version number has changed from the last read. In other words,
-    if two update requests specify the same base version, only one of the requests can succeed.
-    As a result, two separate update requests that happen at the same time will not
-    unintentionally overwrite each other.
-
-     *
-     * @return ObjectVersion
+     * The version number of the object such as node, service, etc. This is needed.
+    overwrite each other.
      */
     public function getVersion(): ?ObjectVersion
     {
@@ -80,18 +57,8 @@ class Config
     }
 
     /**
-     * The version number of the object such as node, service, etc. This is needed to avoid conflicting writes.
-    The client must send the version number along with the modified specification when updating these objects.
-    This approach ensures safe concurrency and determinism in that the change on the object
-    may not be applied if the version number has changed from the last read. In other words,
-    if two update requests specify the same base version, only one of the requests can succeed.
-    As a result, two separate update requests that happen at the same time will not
-    unintentionally overwrite each other.
-
-     *
-     * @param ObjectVersion $version
-     *
-     * @return self
+     * The version number of the object such as node, service, etc. This is needed.
+    overwrite each other.
      */
     public function setVersion(?ObjectVersion $version): self
     {
@@ -100,19 +67,11 @@ class Config
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getCreatedAt(): ?string
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param string $createdAt
-     *
-     * @return self
-     */
     public function setCreatedAt(?string $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -120,19 +79,11 @@ class Config
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUpdatedAt(): ?string
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @param string $updatedAt
-     *
-     * @return self
-     */
     public function setUpdatedAt(?string $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
@@ -140,19 +91,11 @@ class Config
         return $this;
     }
 
-    /**
-     * @return ConfigSpec
-     */
     public function getSpec(): ?ConfigSpec
     {
         return $this->spec;
     }
 
-    /**
-     * @param ConfigSpec $spec
-     *
-     * @return self
-     */
     public function setSpec(?ConfigSpec $spec): self
     {
         $this->spec = $spec;

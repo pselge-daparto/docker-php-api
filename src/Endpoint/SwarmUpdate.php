@@ -10,13 +10,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class SwarmUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class SwarmUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     /**
-     * @param \Docker\API\Model\SwarmSpec $body
-     * @param array                       $queryParameters {
+     * @param array $queryParameters {
      *
-     *     @var int $version The version number of the swarm object being updated. This is required to avoid conflicting writes.
+     *     @var int $version The version number of the swarm object being updated. This is
      *     @var bool $rotateWorkerToken rotate the worker join token
      *     @var bool $rotateManagerToken rotate the manager join token
      *     @var bool $rotateManagerUnlockKey Rotate the manager unlock key.
@@ -28,7 +27,7 @@ class SwarmUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -40,7 +39,7 @@ class SwarmUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         return '/swarm/update';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return $this->getSerializedBody($serializer);
     }
@@ -70,8 +69,10 @@ class SwarmUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
      * @throws \Docker\API\Exception\SwarmUpdateBadRequestException
      * @throws \Docker\API\Exception\SwarmUpdateInternalServerErrorException
      * @throws \Docker\API\Exception\SwarmUpdateServiceUnavailableException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return null;
@@ -85,5 +86,10 @@ class SwarmUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         if (503 === $status) {
             throw new \Docker\API\Exception\SwarmUpdateServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

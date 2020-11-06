@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class ImageMetadataNormalizer implements DenormalizerInterface, NormalizerInterf
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,17 +32,25 @@ class ImageMetadataNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ImageMetadata;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ImageMetadata';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\ImageMetadata();
-        if (property_exists($data, 'LastTagTime') && $data->{'LastTagTime'} !== null) {
-            $object->setLastTagTime($data->{'LastTagTime'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('LastTagTime', $data) && $data['LastTagTime'] !== null) {
+            $object->setLastTagTime($data['LastTagTime']);
+        } elseif (\array_key_exists('LastTagTime', $data) && $data['LastTagTime'] === null) {
+            $object->setLastTagTime(null);
         }
 
         return $object;
@@ -47,9 +58,9 @@ class ImageMetadataNormalizer implements DenormalizerInterface, NormalizerInterf
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getLastTagTime()) {
-            $data->{'LastTagTime'} = $object->getLastTagTime();
+            $data['LastTagTime'] = $object->getLastTagTime();
         }
 
         return $data;

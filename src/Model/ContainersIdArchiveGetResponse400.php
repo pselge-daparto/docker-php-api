@@ -13,16 +13,15 @@ namespace Docker\API\Model;
 class ContainersIdArchiveGetResponse400
 {
     /**
-     * The error message. Either "must specify path parameter" (path cannot be empty) or "not a directory" (path was asserted to be a directory but exists as a file).
+     * The error message. Either "must specify path parameter".
      *
-     * @var string
+     * @var string|null
      */
     protected $message;
 
     /**
-     * The error message. Either "must specify path parameter" (path cannot be empty) or "not a directory" (path was asserted to be a directory but exists as a file).
-     *
-     * @return string
+     * The error message. Either "must specify path parameter".
+    asserted to be a directory but exists as a file).
      */
     public function getMessage(): ?string
     {
@@ -30,11 +29,8 @@ class ContainersIdArchiveGetResponse400
     }
 
     /**
-     * The error message. Either "must specify path parameter" (path cannot be empty) or "not a directory" (path was asserted to be a directory but exists as a file).
-     *
-     * @param string $message
-     *
-     * @return self
+     * The error message. Either "must specify path parameter".
+    asserted to be a directory but exists as a file).
      */
     public function setMessage(?string $message): self
     {

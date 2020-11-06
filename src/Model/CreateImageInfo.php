@@ -13,39 +13,31 @@ namespace Docker\API\Model;
 class CreateImageInfo
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $id;
     /**
-     * @var string
+     * @var string|null
      */
     protected $error;
     /**
-     * @var string
+     * @var string|null
      */
     protected $status;
     /**
-     * @var string
+     * @var string|null
      */
     protected $progress;
     /**
-     * @var ProgressDetail
+     * @var ProgressDetail|null
      */
     protected $progressDetail;
 
-    /**
-     * @return string
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return self
-     */
     public function setId(?string $id): self
     {
         $this->id = $id;
@@ -53,19 +45,11 @@ class CreateImageInfo
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getError(): ?string
     {
         return $this->error;
     }
 
-    /**
-     * @param string $error
-     *
-     * @return self
-     */
     public function setError(?string $error): self
     {
         $this->error = $error;
@@ -73,19 +57,11 @@ class CreateImageInfo
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
-    /**
-     * @param string $status
-     *
-     * @return self
-     */
     public function setStatus(?string $status): self
     {
         $this->status = $status;
@@ -93,19 +69,11 @@ class CreateImageInfo
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getProgress(): ?string
     {
         return $this->progress;
     }
 
-    /**
-     * @param string $progress
-     *
-     * @return self
-     */
     public function setProgress(?string $progress): self
     {
         $this->progress = $progress;
@@ -113,19 +81,11 @@ class CreateImageInfo
         return $this;
     }
 
-    /**
-     * @return ProgressDetail
-     */
     public function getProgressDetail(): ?ProgressDetail
     {
         return $this->progressDetail;
     }
 
-    /**
-     * @param ProgressDetail $progressDetail
-     *
-     * @return self
-     */
     public function setProgressDetail(?ProgressDetail $progressDetail): self
     {
         $this->progressDetail = $progressDetail;

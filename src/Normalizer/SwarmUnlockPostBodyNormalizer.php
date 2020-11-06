@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class SwarmUnlockPostBodyNormalizer implements DenormalizerInterface, Normalizer
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,17 +32,25 @@ class SwarmUnlockPostBodyNormalizer implements DenormalizerInterface, Normalizer
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\SwarmUnlockPostBody;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\SwarmUnlockPostBody';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\SwarmUnlockPostBody();
-        if (property_exists($data, 'UnlockKey') && $data->{'UnlockKey'} !== null) {
-            $object->setUnlockKey($data->{'UnlockKey'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('UnlockKey', $data) && $data['UnlockKey'] !== null) {
+            $object->setUnlockKey($data['UnlockKey']);
+        } elseif (\array_key_exists('UnlockKey', $data) && $data['UnlockKey'] === null) {
+            $object->setUnlockKey(null);
         }
 
         return $object;
@@ -47,9 +58,9 @@ class SwarmUnlockPostBodyNormalizer implements DenormalizerInterface, Normalizer
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getUnlockKey()) {
-            $data->{'UnlockKey'} = $object->getUnlockKey();
+            $data['UnlockKey'] = $object->getUnlockKey();
         }
 
         return $data;

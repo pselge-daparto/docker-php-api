@@ -15,20 +15,18 @@ class ImageDeleteResponseItem
     /**
      * The image ID of an image that was untagged.
      *
-     * @var string
+     * @var string|null
      */
     protected $untagged;
     /**
      * The image ID of an image that was deleted.
      *
-     * @var string
+     * @var string|null
      */
     protected $deleted;
 
     /**
      * The image ID of an image that was untagged.
-     *
-     * @return string
      */
     public function getUntagged(): ?string
     {
@@ -37,10 +35,6 @@ class ImageDeleteResponseItem
 
     /**
      * The image ID of an image that was untagged.
-     *
-     * @param string $untagged
-     *
-     * @return self
      */
     public function setUntagged(?string $untagged): self
     {
@@ -51,8 +45,6 @@ class ImageDeleteResponseItem
 
     /**
      * The image ID of an image that was deleted.
-     *
-     * @return string
      */
     public function getDeleted(): ?string
     {
@@ -61,10 +53,6 @@ class ImageDeleteResponseItem
 
     /**
      * The image ID of an image that was deleted.
-     *
-     * @param string $deleted
-     *
-     * @return self
      */
     public function setDeleted(?string $deleted): self
     {

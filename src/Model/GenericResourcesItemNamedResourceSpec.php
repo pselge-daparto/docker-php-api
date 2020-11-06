@@ -13,27 +13,19 @@ namespace Docker\API\Model;
 class GenericResourcesItemNamedResourceSpec
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $kind;
     /**
-     * @var string
+     * @var string|null
      */
     protected $value;
 
-    /**
-     * @return string
-     */
     public function getKind(): ?string
     {
         return $this->kind;
     }
 
-    /**
-     * @param string $kind
-     *
-     * @return self
-     */
     public function setKind(?string $kind): self
     {
         $this->kind = $kind;
@@ -41,19 +33,11 @@ class GenericResourcesItemNamedResourceSpec
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @param string $value
-     *
-     * @return self
-     */
     public function setValue(?string $value): self
     {
         $this->value = $value;

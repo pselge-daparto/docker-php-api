@@ -15,32 +15,30 @@ class TaskSpecRestartPolicy
     /**
      * Condition for restart.
      *
-     * @var string
+     * @var string|null
      */
     protected $condition;
     /**
      * Delay between restart attempts.
      *
-     * @var int
+     * @var int|null
      */
     protected $delay;
     /**
-     * Maximum attempts to restart a given container before giving up (default value is 0, which is ignored).
+     * Maximum attempts to restart a given container before giving up.
      *
-     * @var int
+     * @var int|null
      */
-    protected $maxAttempts;
+    protected $maxAttempts = 0;
     /**
-     * Windows is the time window used to evaluate the restart policy (default value is 0, which is unbounded).
+     * Windows is the time window used to evaluate the restart policy.
      *
-     * @var int
+     * @var int|null
      */
-    protected $window;
+    protected $window = 0;
 
     /**
      * Condition for restart.
-     *
-     * @return string
      */
     public function getCondition(): ?string
     {
@@ -49,10 +47,6 @@ class TaskSpecRestartPolicy
 
     /**
      * Condition for restart.
-     *
-     * @param string $condition
-     *
-     * @return self
      */
     public function setCondition(?string $condition): self
     {
@@ -63,8 +57,6 @@ class TaskSpecRestartPolicy
 
     /**
      * Delay between restart attempts.
-     *
-     * @return int
      */
     public function getDelay(): ?int
     {
@@ -73,10 +65,6 @@ class TaskSpecRestartPolicy
 
     /**
      * Delay between restart attempts.
-     *
-     * @param int $delay
-     *
-     * @return self
      */
     public function setDelay(?int $delay): self
     {
@@ -86,9 +74,8 @@ class TaskSpecRestartPolicy
     }
 
     /**
-     * Maximum attempts to restart a given container before giving up (default value is 0, which is ignored).
-     *
-     * @return int
+     * Maximum attempts to restart a given container before giving up.
+    (default value is 0, which is ignored).
      */
     public function getMaxAttempts(): ?int
     {
@@ -96,11 +83,8 @@ class TaskSpecRestartPolicy
     }
 
     /**
-     * Maximum attempts to restart a given container before giving up (default value is 0, which is ignored).
-     *
-     * @param int $maxAttempts
-     *
-     * @return self
+     * Maximum attempts to restart a given container before giving up.
+    (default value is 0, which is ignored).
      */
     public function setMaxAttempts(?int $maxAttempts): self
     {
@@ -110,9 +94,8 @@ class TaskSpecRestartPolicy
     }
 
     /**
-     * Windows is the time window used to evaluate the restart policy (default value is 0, which is unbounded).
-     *
-     * @return int
+     * Windows is the time window used to evaluate the restart policy.
+    (default value is 0, which is unbounded).
      */
     public function getWindow(): ?int
     {
@@ -120,11 +103,8 @@ class TaskSpecRestartPolicy
     }
 
     /**
-     * Windows is the time window used to evaluate the restart policy (default value is 0, which is unbounded).
-     *
-     * @param int $window
-     *
-     * @return self
+     * Windows is the time window used to evaluate the restart policy.
+    (default value is 0, which is unbounded).
      */
     public function setWindow(?int $window): self
     {

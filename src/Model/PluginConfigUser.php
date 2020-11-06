@@ -13,27 +13,19 @@ namespace Docker\API\Model;
 class PluginConfigUser
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $uID;
     /**
-     * @var int
+     * @var int|null
      */
     protected $gID;
 
-    /**
-     * @return int
-     */
     public function getUID(): ?int
     {
         return $this->uID;
     }
 
-    /**
-     * @param int $uID
-     *
-     * @return self
-     */
     public function setUID(?int $uID): self
     {
         $this->uID = $uID;
@@ -41,19 +33,11 @@ class PluginConfigUser
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getGID(): ?int
     {
         return $this->gID;
     }
 
-    /**
-     * @param int $gID
-     *
-     * @return self
-     */
     public function setGID(?int $gID): self
     {
         $this->gID = $gID;

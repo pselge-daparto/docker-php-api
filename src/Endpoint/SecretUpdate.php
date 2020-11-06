@@ -10,16 +10,18 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class SecretUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class SecretUpdate extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     protected $id;
 
     /**
      * @param string                       $id              The ID or name of the secret
-     * @param \Docker\API\Model\SecretSpec $body            The spec of the secret to update. Currently, only the Labels field can be updated. All other fields must remain unchanged from the [SecretInspect endpoint](#operation/SecretInspect) response values.
+     * @param \Docker\API\Model\SecretSpec $body            The spec of the secret to update. Currently, only the Labels field
      * @param array                        $queryParameters {
      *
-     *     @var int $version The version number of the secret object being updated. This is required to avoid conflicting writes.
+     *     @var int $version The version number of the secret object being updated. This is
+    required to avoid conflicting writes.
+
      * }
      */
     public function __construct(string $id, \Docker\API\Model\SecretSpec $body, array $queryParameters = [])
@@ -29,7 +31,7 @@ class SecretUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -41,7 +43,7 @@ class SecretUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         return str_replace(['{id}'], [$this->id], '/secrets/{id}/update');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return $this->getSerializedBody($serializer);
     }
@@ -69,8 +71,10 @@ class SecretUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
      * @throws \Docker\API\Exception\SecretUpdateNotFoundException
      * @throws \Docker\API\Exception\SecretUpdateInternalServerErrorException
      * @throws \Docker\API\Exception\SecretUpdateServiceUnavailableException
+     *
+     * @return null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return null;
@@ -87,5 +91,10 @@ class SecretUpdate extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \
         if (503 === $status) {
             throw new \Docker\API\Exception\SecretUpdateServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

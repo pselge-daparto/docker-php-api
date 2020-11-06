@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class PluginConfigUserNormalizer implements DenormalizerInterface, NormalizerInt
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,20 +32,30 @@ class PluginConfigUserNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\PluginConfigUser;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\PluginConfigUser';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\PluginConfigUser();
-        if (property_exists($data, 'UID') && $data->{'UID'} !== null) {
-            $object->setUID($data->{'UID'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'GID') && $data->{'GID'} !== null) {
-            $object->setGID($data->{'GID'});
+        if (\array_key_exists('UID', $data) && $data['UID'] !== null) {
+            $object->setUID($data['UID']);
+        } elseif (\array_key_exists('UID', $data) && $data['UID'] === null) {
+            $object->setUID(null);
+        }
+        if (\array_key_exists('GID', $data) && $data['GID'] !== null) {
+            $object->setGID($data['GID']);
+        } elseif (\array_key_exists('GID', $data) && $data['GID'] === null) {
+            $object->setGID(null);
         }
 
         return $object;
@@ -50,12 +63,12 @@ class PluginConfigUserNormalizer implements DenormalizerInterface, NormalizerInt
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getUID()) {
-            $data->{'UID'} = $object->getUID();
+            $data['UID'] = $object->getUID();
         }
         if (null !== $object->getGID()) {
-            $data->{'GID'} = $object->getGID();
+            $data['GID'] = $object->getGID();
         }
 
         return $data;

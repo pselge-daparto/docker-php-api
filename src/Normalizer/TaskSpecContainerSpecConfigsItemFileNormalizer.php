@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class TaskSpecContainerSpecConfigsItemFileNormalizer implements DenormalizerInte
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,26 +32,40 @@ class TaskSpecContainerSpecConfigsItemFileNormalizer implements DenormalizerInte
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\TaskSpecContainerSpecConfigsItemFile;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\TaskSpecContainerSpecConfigsItemFile';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\TaskSpecContainerSpecConfigsItemFile();
-        if (property_exists($data, 'Name') && $data->{'Name'} !== null) {
-            $object->setName($data->{'Name'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'UID') && $data->{'UID'} !== null) {
-            $object->setUID($data->{'UID'});
+        if (\array_key_exists('Name', $data) && $data['Name'] !== null) {
+            $object->setName($data['Name']);
+        } elseif (\array_key_exists('Name', $data) && $data['Name'] === null) {
+            $object->setName(null);
         }
-        if (property_exists($data, 'GID') && $data->{'GID'} !== null) {
-            $object->setGID($data->{'GID'});
+        if (\array_key_exists('UID', $data) && $data['UID'] !== null) {
+            $object->setUID($data['UID']);
+        } elseif (\array_key_exists('UID', $data) && $data['UID'] === null) {
+            $object->setUID(null);
         }
-        if (property_exists($data, 'Mode') && $data->{'Mode'} !== null) {
-            $object->setMode($data->{'Mode'});
+        if (\array_key_exists('GID', $data) && $data['GID'] !== null) {
+            $object->setGID($data['GID']);
+        } elseif (\array_key_exists('GID', $data) && $data['GID'] === null) {
+            $object->setGID(null);
+        }
+        if (\array_key_exists('Mode', $data) && $data['Mode'] !== null) {
+            $object->setMode($data['Mode']);
+        } elseif (\array_key_exists('Mode', $data) && $data['Mode'] === null) {
+            $object->setMode(null);
         }
 
         return $object;
@@ -56,18 +73,18 @@ class TaskSpecContainerSpecConfigsItemFileNormalizer implements DenormalizerInte
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getName()) {
-            $data->{'Name'} = $object->getName();
+            $data['Name'] = $object->getName();
         }
         if (null !== $object->getUID()) {
-            $data->{'UID'} = $object->getUID();
+            $data['UID'] = $object->getUID();
         }
         if (null !== $object->getGID()) {
-            $data->{'GID'} = $object->getGID();
+            $data['GID'] = $object->getGID();
         }
         if (null !== $object->getMode()) {
-            $data->{'Mode'} = $object->getMode();
+            $data['Mode'] = $object->getMode();
         }
 
         return $data;

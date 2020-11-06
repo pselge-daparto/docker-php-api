@@ -13,59 +13,51 @@ namespace Docker\API\Model;
 class ImageSummary
 {
     /**
-     * @var string
+     * @var string|null
      */
     protected $id;
     /**
-     * @var string
+     * @var string|null
      */
     protected $parentId;
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $repoTags;
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $repoDigests;
     /**
-     * @var int
+     * @var int|null
      */
     protected $created;
     /**
-     * @var int
+     * @var int|null
      */
     protected $size;
     /**
-     * @var int
+     * @var int|null
      */
     protected $sharedSize;
     /**
-     * @var int
+     * @var int|null
      */
     protected $virtualSize;
     /**
-     * @var string[]
+     * @var string[]|null
      */
     protected $labels;
     /**
-     * @var int
+     * @var int|null
      */
     protected $containers;
 
-    /**
-     * @return string
-     */
     public function getId(): ?string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return self
-     */
     public function setId(?string $id): self
     {
         $this->id = $id;
@@ -73,19 +65,11 @@ class ImageSummary
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getParentId(): ?string
     {
         return $this->parentId;
     }
 
-    /**
-     * @param string $parentId
-     *
-     * @return self
-     */
     public function setParentId(?string $parentId): self
     {
         $this->parentId = $parentId;
@@ -94,7 +78,7 @@ class ImageSummary
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
     public function getRepoTags(): ?array
     {
@@ -102,9 +86,7 @@ class ImageSummary
     }
 
     /**
-     * @param string[] $repoTags
-     *
-     * @return self
+     * @param string[]|null $repoTags
      */
     public function setRepoTags(?array $repoTags): self
     {
@@ -114,7 +96,7 @@ class ImageSummary
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
     public function getRepoDigests(): ?array
     {
@@ -122,9 +104,7 @@ class ImageSummary
     }
 
     /**
-     * @param string[] $repoDigests
-     *
-     * @return self
+     * @param string[]|null $repoDigests
      */
     public function setRepoDigests(?array $repoDigests): self
     {
@@ -133,19 +113,11 @@ class ImageSummary
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getCreated(): ?int
     {
         return $this->created;
     }
 
-    /**
-     * @param int $created
-     *
-     * @return self
-     */
     public function setCreated(?int $created): self
     {
         $this->created = $created;
@@ -153,19 +125,11 @@ class ImageSummary
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getSize(): ?int
     {
         return $this->size;
     }
 
-    /**
-     * @param int $size
-     *
-     * @return self
-     */
     public function setSize(?int $size): self
     {
         $this->size = $size;
@@ -173,19 +137,11 @@ class ImageSummary
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getSharedSize(): ?int
     {
         return $this->sharedSize;
     }
 
-    /**
-     * @param int $sharedSize
-     *
-     * @return self
-     */
     public function setSharedSize(?int $sharedSize): self
     {
         $this->sharedSize = $sharedSize;
@@ -193,19 +149,11 @@ class ImageSummary
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getVirtualSize(): ?int
     {
         return $this->virtualSize;
     }
 
-    /**
-     * @param int $virtualSize
-     *
-     * @return self
-     */
     public function setVirtualSize(?int $virtualSize): self
     {
         $this->virtualSize = $virtualSize;
@@ -214,38 +162,28 @@ class ImageSummary
     }
 
     /**
-     * @return string[]
+     * @return string[]|null
      */
-    public function getLabels(): ?\ArrayObject
+    public function getLabels(): ?iterable
     {
         return $this->labels;
     }
 
     /**
-     * @param string[] $labels
-     *
-     * @return self
+     * @param string[]|null $labels
      */
-    public function setLabels(?\ArrayObject $labels): self
+    public function setLabels(?iterable $labels): self
     {
         $this->labels = $labels;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getContainers(): ?int
     {
         return $this->containers;
     }
 
-    /**
-     * @param int $containers
-     *
-     * @return self
-     */
     public function setContainers(?int $containers): self
     {
         $this->containers = $containers;

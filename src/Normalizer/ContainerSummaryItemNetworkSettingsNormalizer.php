@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class ContainerSummaryItemNetworkSettingsNormalizer implements DenormalizerInter
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,21 +32,29 @@ class ContainerSummaryItemNetworkSettingsNormalizer implements DenormalizerInter
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ContainerSummaryItemNetworkSettings;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ContainerSummaryItemNetworkSettings';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\ContainerSummaryItemNetworkSettings();
-        if (property_exists($data, 'Networks') && $data->{'Networks'} !== null) {
+        if (null === $data || false === \is_array($data)) {
+            return $object;
+        }
+        if (\array_key_exists('Networks', $data) && $data['Networks'] !== null) {
             $values = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
-            foreach ($data->{'Networks'} as $key => $value) {
+            foreach ($data['Networks'] as $key => $value) {
                 $values[$key] = $this->denormalizer->denormalize($value, 'Docker\\API\\Model\\EndpointSettings', 'json', $context);
             }
             $object->setNetworks($values);
+        } elseif (\array_key_exists('Networks', $data) && $data['Networks'] === null) {
+            $object->setNetworks(null);
         }
 
         return $object;
@@ -51,13 +62,13 @@ class ContainerSummaryItemNetworkSettingsNormalizer implements DenormalizerInter
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getNetworks()) {
-            $values = new \stdClass();
+            $values = [];
             foreach ($object->getNetworks() as $key => $value) {
-                $values->{$key} = $this->normalizer->normalize($value, 'json', $context);
+                $values[$key] = $this->normalizer->normalize($value, 'json', $context);
             }
-            $data->{'Networks'} = $values;
+            $data['Networks'] = $values;
         }
 
         return $data;

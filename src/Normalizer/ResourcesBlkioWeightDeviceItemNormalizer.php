@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Docker\API\Normalizer;
 
+use Docker\API\Runtime\Normalizer\CheckArray;
+use Jane\JsonSchemaRuntime\Reference;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,6 +23,7 @@ class ResourcesBlkioWeightDeviceItemNormalizer implements DenormalizerInterface,
 {
     use DenormalizerAwareTrait;
     use NormalizerAwareTrait;
+    use CheckArray;
 
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -29,20 +32,30 @@ class ResourcesBlkioWeightDeviceItemNormalizer implements DenormalizerInterface,
 
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof \Docker\API\Model\ResourcesBlkioWeightDeviceItem;
+        return is_object($data) && get_class($data) === 'Docker\\API\\Model\\ResourcesBlkioWeightDeviceItem';
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if (!is_object($data)) {
-            return null;
+        if (isset($data['$ref'])) {
+            return new Reference($data['$ref'], $context['document-origin']);
+        }
+        if (isset($data['$recursiveRef'])) {
+            return new Reference($data['$recursiveRef'], $context['document-origin']);
         }
         $object = new \Docker\API\Model\ResourcesBlkioWeightDeviceItem();
-        if (property_exists($data, 'Path') && $data->{'Path'} !== null) {
-            $object->setPath($data->{'Path'});
+        if (null === $data || false === \is_array($data)) {
+            return $object;
         }
-        if (property_exists($data, 'Weight') && $data->{'Weight'} !== null) {
-            $object->setWeight($data->{'Weight'});
+        if (\array_key_exists('Path', $data) && $data['Path'] !== null) {
+            $object->setPath($data['Path']);
+        } elseif (\array_key_exists('Path', $data) && $data['Path'] === null) {
+            $object->setPath(null);
+        }
+        if (\array_key_exists('Weight', $data) && $data['Weight'] !== null) {
+            $object->setWeight($data['Weight']);
+        } elseif (\array_key_exists('Weight', $data) && $data['Weight'] === null) {
+            $object->setWeight(null);
         }
 
         return $object;
@@ -50,12 +63,12 @@ class ResourcesBlkioWeightDeviceItemNormalizer implements DenormalizerInterface,
 
     public function normalize($object, $format = null, array $context = [])
     {
-        $data = new \stdClass();
+        $data = [];
         if (null !== $object->getPath()) {
-            $data->{'Path'} = $object->getPath();
+            $data['Path'] = $object->getPath();
         }
         if (null !== $object->getWeight()) {
-            $data->{'Weight'} = $object->getWeight();
+            $data['Weight'] = $object->getWeight();
         }
 
         return $data;

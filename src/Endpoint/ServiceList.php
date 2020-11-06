@@ -10,16 +10,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class ServiceList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class ServiceList extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     /**
      * @param array $queryParameters {
      *
-     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to process on the services list. Available filters:
-
-    - `id=<service id>`
-    - `label=<service label>`
-    - `mode=["replicated"|"global"]`
+     *     @var string $filters A JSON encoded value of the filters (a `map[string][]string`) to
     - `name=<service name>`
 
      * }
@@ -29,7 +25,7 @@ class ServiceList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -41,7 +37,7 @@ class ServiceList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         return '/services';
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -68,9 +64,9 @@ class ServiceList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
      * @throws \Docker\API\Exception\ServiceListInternalServerErrorException
      * @throws \Docker\API\Exception\ServiceListServiceUnavailableException
      *
-     * @return null|\Docker\API\Model\Service[]
+     * @return \Docker\API\Model\Service[]|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\Service[]', 'json');
@@ -81,5 +77,10 @@ class ServiceList extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         if (503 === $status) {
             throw new \Docker\API\Exception\ServiceListServiceUnavailableException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }

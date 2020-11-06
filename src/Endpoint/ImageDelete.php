@@ -10,17 +10,12 @@ declare(strict_types=1);
 
 namespace Docker\API\Endpoint;
 
-class ImageDelete extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \Jane\OpenApiRuntime\Client\AmpArtaxEndpoint, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpoint
+class ImageDelete extends \Docker\API\Runtime\Client\BaseEndpoint implements \Docker\API\Runtime\Client\Endpoint
 {
     protected $name;
 
     /**
      * Remove an image, along with any untagged parent images that were.
-    referenced by that image.
-
-    Images can't be removed if they have descendant images, are being
-    used by a running container or are being used by a build.
-
      *
      * @param string $name            Image name or ID
      * @param array  $queryParameters {
@@ -35,7 +30,7 @@ class ImageDelete extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         $this->queryParameters = $queryParameters;
     }
 
-    use \Jane\OpenApiRuntime\Client\AmpArtaxEndpointTrait, \Jane\OpenApiRuntime\Client\Psr7HttplugEndpointTrait;
+    use \Docker\API\Runtime\Client\EndpointTrait;
 
     public function getMethod(): string
     {
@@ -47,7 +42,7 @@ class ImageDelete extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         return str_replace(['{name}'], [$this->name], '/images/{name}');
     }
 
-    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, \Http\Message\StreamFactory $streamFactory = null): array
+    public function getBody(\Symfony\Component\Serializer\SerializerInterface $serializer, $streamFactory = null): array
     {
         return [[], null];
     }
@@ -76,9 +71,9 @@ class ImageDelete extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
      * @throws \Docker\API\Exception\ImageDeleteConflictException
      * @throws \Docker\API\Exception\ImageDeleteInternalServerErrorException
      *
-     * @return null|\Docker\API\Model\ImageDeleteResponseItem[]
+     * @return \Docker\API\Model\ImageDeleteResponseItem[]|null
      */
-    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer)
+    protected function transformResponseBody(string $body, int $status, \Symfony\Component\Serializer\SerializerInterface $serializer, ?string $contentType)
     {
         if (200 === $status) {
             return $serializer->deserialize($body, 'Docker\\API\\Model\\ImageDeleteResponseItem[]', 'json');
@@ -92,5 +87,10 @@ class ImageDelete extends \Jane\OpenApiRuntime\Client\BaseEndpoint implements \J
         if (500 === $status) {
             throw new \Docker\API\Exception\ImageDeleteInternalServerErrorException($serializer->deserialize($body, 'Docker\\API\\Model\\ErrorResponse', 'json'));
         }
+    }
+
+    public function getAuthenticationScopes(): array
+    {
+        return [];
     }
 }
